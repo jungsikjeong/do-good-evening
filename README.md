@@ -133,7 +133,7 @@ $ npm install
 3. **nextjs(클라이언트) 앱 실행**
 
 ```bash
-$ npm run start
+$ npm run dev
 ```
 
 <br />
