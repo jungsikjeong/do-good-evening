@@ -1,4 +1,4 @@
-import LoginBtn from '@/component/LoginBtn';
+import LoginBtn from '@/components/LoginBtn';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -19,8 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className='bg-black'>
-        <header className='fixed w-full flex items-center p-12'>
+      <body className='w-full h-screen'>
+        <header className='fixed w-full flex items-center p-12 z-20'>
           <Link href='/'>
             <Image
               src='/images/deg_logo.png'
@@ -34,12 +34,6 @@ export default function RootLayout({
           <LoginBtn />
         </header>
         {children}
-
-        <footer className='fixed right-16 bottom-14'>
-          <button className='text-gray-200 border rounded-md border-gray-200 px-6 py-4 hover:bg-gray-50 hover:text-gray-600 transition-all'>
-            당신의 저녁을 공유해주세요
-          </button>
-        </footer>
       </body>
     </html>
   );
