@@ -5,3 +5,22 @@
 * {
   box-sizing: border-box;
 }
+
+/* 로그인 버튼 애니메이션 */
+.login__hover-ani {
+  opacity: 1;
+}
+.login__hover-ani :hover {
+  animation: scaleOut 0.2s ease-in-out forwards;
+}
+
+@keyframes scaleOut {
+  0% {
+    scale: 1;
+    opacity: 1;
+  }
+  100% {
+    scale: 1.2;
+    opacity: 0;
+  }
+}
