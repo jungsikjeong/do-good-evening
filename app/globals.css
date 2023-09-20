@@ -58,5 +58,22 @@
 /* SWIPER BUTTON */
 .swiper-button-prev,
 .swiper-button-next {
-  color: red;
+  color: white !important;
+}
+
+.swiper-button-prev {
+  margin-left: 2.5rem;
+}
+
+.swiper-button-next {
+  margin-right: 2.5rem;
+}
+@media screen and (max-width: 768px) {
+  .swiper-button-prev {
+    margin-left: 0rem;
+  }
+
+  .swiper-button-next {
+    margin-right: 0rem;
+  }
 }
