@@ -52,7 +52,7 @@ type : subject
 |  목록   |  버전   |
 | :-----: | :-----: |
 |   npm   |  9.2.0  |
-| node.js | 16.13.0 |
+| node.js | 18.18.0 |
 | next.js | 13.4.19 |
 
 ## Code Formatting
