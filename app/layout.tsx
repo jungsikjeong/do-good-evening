@@ -1,4 +1,3 @@
-import LoginBtn from '@/components/LoginBtn';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -20,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='w-full h-screen'>
-        <header className='fixed w-full flex items-center p-10 pb-0 z-10 max-md:p-2'>
+        <header className='fixed w-full p-10 pb-0 z-10 max-md:p-2'>
           <Link href='/'>
             <Image
               src='/images/deg_logo.png'
@@ -29,8 +28,6 @@ export default function RootLayout({
               height={150}
             />
           </Link>
-          {/* 로그인 버튼 */}
-          <LoginBtn />
         </header>
         {children}
       </body>

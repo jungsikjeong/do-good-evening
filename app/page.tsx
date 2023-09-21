@@ -1,10 +1,14 @@
 'use client';
 
 import FullPages from '@/components/FullPages';
+import LoginBtn from '@/components/LoginBtn';
 
 export default function Home() {
   return (
     <div>
+      {/* 로그인 버튼 */}
+      <LoginBtn />
+
       <FullPages />
 
       {/* 글쓰기 버튼 */}
