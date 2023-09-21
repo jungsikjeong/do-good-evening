@@ -17,7 +17,7 @@ import example2 from '../public/images/example2.jpg';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-//테스트
+
 const PostSwiper = ({ moveSectionDown }: any) => {
   const dataList = [example0, example1, example2];
 
