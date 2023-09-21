@@ -1,7 +1,7 @@
 'use client';
 
 import ReactFullpage from '@fullpage/react-fullpage';
-import PostingSection from './PostingSection';
+import PostingSection from './postList/PostingSection';
 import Map from './Map';
 import GroupPostings from './GroupPostings';
 import Rank from './Rank';
@@ -31,9 +31,8 @@ const FullPages = () => (
             moveSectionDown={() => fullpageApi.moveSectionDown()}
           />
 
-          <div className='section bg-red-500'>
-            <p>Section 2</p>
-          </div>
+          {/* SECTION 2 : 지도 섹션 */}
+          <Map moveSectionDown={() => fullpageApi.moveSectionDown()} />
 
           <div className='section bg-red-400'>
             <p>Section 3</p>

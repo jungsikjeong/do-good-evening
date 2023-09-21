@@ -10,9 +10,9 @@ import { FcLike } from 'react-icons/fc';
 import { motion } from 'framer-motion';
 
 import dummy from '@/utils/dummydata';
-import example0 from '../public/images/example0.jpg';
-import example1 from '../public/images/example1.jpg';
-import example2 from '../public/images/example2.jpg';
+import example0 from '../../public/images/example0.jpg';
+import example1 from '../../public/images/example1.jpg';
+import example2 from '../../public/images/example2.jpg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
