@@ -1,7 +1,7 @@
 'use client';
 
 import ReactFullpage from '@fullpage/react-fullpage';
-import PostingSection from './PostingSection';
+import PostingSection from './postList/PostingSection';
 import Map from './Map';
 import GroupPostings from './GroupPostings';
 import Rank from './Rank';
