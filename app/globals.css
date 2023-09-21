@@ -6,25 +6,6 @@
   box-sizing: border-box;
 }
 
-/* 로그인 버튼 애니메이션 */
-.login__hover-ani {
-  opacity: 1;
-}
-.login__hover-ani :hover {
-  animation: scaleOut 0.2s ease-in-out forwards;
-}
-
-@keyframes scaleOut {
-  0% {
-    scale: 1;
-    opacity: 1;
-  }
-  100% {
-    scale: 1.2;
-    opacity: 0;
-  }
-}
-
 /* swiper */
 .swiper {
   width: 100%;
@@ -72,8 +53,24 @@
   .swiper-button-prev {
     margin-left: 0rem;
   }
+  .swiper-button-prev::after {
+    font-size: 30px !important;
+  }
 
   .swiper-button-next {
     margin-right: 0rem;
   }
+  .swiper-button-next::after {
+    font-size: 30px !important;
+  }
+}
+
+/* svg_color */
+.svg_color {
+  transition: all 0.3s ease;
+}
+
+.svg_color path {
+  fill: #f44336;
+  fill: white;
 }
