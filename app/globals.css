@@ -74,3 +74,13 @@
   fill: #f44336;
   fill: white;
 }
+
+/* map */
+.bg-map {
+  background: linear-gradient(
+    to right,
+    rgb(188, 188, 188),
+    rgb(235, 169, 108) 150%,
+    rgb(188, 188, 188)
+  );
+}

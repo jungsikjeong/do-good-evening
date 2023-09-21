@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       backgroundColor: {
         'rgba-opacity': 'rgba(0,0,0,0.5)',
+        // map: 'rgba(188, 188, 188) '
       },
     },
   },

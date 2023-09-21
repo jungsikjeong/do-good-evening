@@ -31,9 +31,8 @@ const FullPages = () => (
             moveSectionDown={() => fullpageApi.moveSectionDown()}
           />
 
-          <div className='section bg-red-500'>
-            <p>Section 2</p>
-          </div>
+          {/* SECTION 2 : 지도 섹션 */}
+          <Map moveSectionDown={() => fullpageApi.moveSectionDown()} />
 
           <div className='section bg-red-400'>
             <p>Section 3</p>
