@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
+'use client';
 
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Navigation } from 'swiper/modules';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -9,23 +9,47 @@ import { BiShareAlt } from 'react-icons/bi';
 import { FcLike } from 'react-icons/fc';
 import { motion } from 'framer-motion';
 
-import dummy from '@/utils/dummydata';
-import example0 from '../../public/images/example0.jpg';
-import example1 from '../../public/images/example1.jpg';
-import example2 from '../../public/images/example2.jpg';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Image from 'next/image';
 
 const PostSwiper = ({ moveSectionDown }: any) => {
-  const dataList = [example0, example1, example2];
+  const [dummyData, setDummyData] = useState([
+    {
+      id: '0',
+      imgUrl: '/images/example0.jpg',
+      description: '오늘 하루도 평안히 마무리',
+      nickname: '정두굿',
+      uploadTime: '7:31:48 PM',
+      city: 'Bucheon',
+      country: 'Korean',
+    },
+    {
+      id: '1',
+      imgUrl: '/images/example1.jpg',
+      description: '저녁 노을 보세요~',
+      nickname: '정두쏘굿',
+      uploadTime: '6:31:48 PM',
+      city: 'Bucheon',
+      country: 'Korean',
+    },
+    {
+      id: '2',
+      imgUrl: '/images/example2.jpg',
+      description: '오.전(오늘 전나이쁘다는 뜻)',
+      nickname: '정말요',
+      uploadTime: '8:30:48 PM',
+      city: 'Bucheon',
+      country: 'Korean',
+    },
+  ]);
 
   const onClick = () => {
     console.log('클릭');
   };
   return (
-    <div className='w-screen h-screen bg-black'>
+    <div className='relative w-screen h-screen bg-black z-50'>
       <Swiper
         slidesPerView={1}
         spaceBetween={30}
@@ -40,11 +64,16 @@ const PostSwiper = ({ moveSectionDown }: any) => {
         modules={[Navigation, Keyboard]}
         className='mySwiper'
       >
-        {dummy.map((data, index) => (
+        {dummyData.map((data, index) => (
           <SwiperSlide key={data.id}>
-            <div>
+            <div className=''>
               {/* 포스팅 사진 */}
-              <Image src={dataList[index]} alt='이미지' fill />
+              {/* <Image src={data.imgUrl} alt='이미지' fill objectFit='cover' /> */}
+              <img
+                src={data.imgUrl}
+                alt='이미지'
+                className='absolute top-0 left-0'
+              />
 
               {/* 포스팅 버튼 그룹 */}
               <div
@@ -113,7 +142,7 @@ const PostSwiper = ({ moveSectionDown }: any) => {
             {/* 스크롤 버튼 */}
             <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all max-md:hidden'>
               <button onClick={() => moveSectionDown()}>
-                <Image
+                <img
                   src='/images/scroll_icon.png'
                   alt='Scroll'
                   width={50}
