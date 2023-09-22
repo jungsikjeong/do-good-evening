@@ -1,13 +1,20 @@
 'use client';
 
+import AuthModal from '@/components/AuthModal';
 import FullPages from '@/components/FullPages';
 import LoginBtn from '@/components/LoginBtn';
+import { useState } from 'react';
 
 export default function Home() {
+  const [authModal, setAuthModal] = useState<boolean>(false);
+
   return (
     <div>
+      {/* Auth Modal(로그인버튼을 클릭하면 열림)*/}
+      <AuthModal authModal={authModal} setAuthModal={setAuthModal} />
+
       {/* 로그인 버튼 */}
-      <LoginBtn />
+      <LoginBtn setAuthModal={setAuthModal} />
 
       <FullPages />
 

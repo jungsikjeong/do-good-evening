@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-/* swiper */
+/* Swiper */
 .swiper {
   width: 100%;
   height: 100%;
@@ -36,7 +36,7 @@
   margin-right: auto;
 }
 
-/* SWIPER BUTTON */
+/* SwiperButton */
 .swiper-button-prev,
 .swiper-button-next {
   color: white !important;
@@ -65,7 +65,7 @@
   }
 }
 
-/* svg_color */
+/* Svg_color */
 .svg_color {
   transition: all 0.3s ease;
 }
@@ -75,7 +75,7 @@
   fill: white;
 }
 
-/* map */
+/* Map */
 .bg-map {
   background: linear-gradient(
     to right,
@@ -83,4 +83,18 @@
     rgb(235, 169, 108) 150%,
     rgb(188, 188, 188)
   );
+}
+
+/* AuthModal */
+.authBgColor {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* CloseButton */
+.closeButton path {
+  transition: all 0.3s ease;
+  stroke: gray;
+}
+.closeButton:hover path {
+  stroke: black;
 }
