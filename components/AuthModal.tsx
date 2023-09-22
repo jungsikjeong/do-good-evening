@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SignInForm from './authForm/SignInForm';
 import { SetStateAction } from 'react';
+import SignUpForm from './authForm/SignUpForm';
 
 interface Auth {
   authModal: boolean;
@@ -18,7 +19,7 @@ const AuthModal = ({ authModal, setAuthModal }: Auth) => {
           </SwiperSlide>
           <SwiperSlide>
             {/* 회원가입 Form */}
-            {/* 회원가입 Form */}
+            <SignUpForm setAuthModal={setAuthModal} />
           </SwiperSlide>
         </Swiper>
       </div>
