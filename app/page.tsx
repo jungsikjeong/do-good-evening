@@ -11,7 +11,9 @@ export default function Home() {
   return (
     <div>
       {/* Auth Modal(로그인버튼을 클릭하면 열림)*/}
-      <AuthModal authModal={authModal} setAuthModal={setAuthModal} />
+      {authModal && (
+        <AuthModal authModal={authModal} setAuthModal={setAuthModal} />
+      )}
 
       {/* 로그인 버튼 */}
       <LoginBtn setAuthModal={setAuthModal} />

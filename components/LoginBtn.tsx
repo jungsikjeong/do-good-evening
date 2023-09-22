@@ -11,7 +11,7 @@ interface LoginBtnProps {
 const LoginBtn = ({ setAuthModal }: LoginBtnProps) => {
   return (
     <button
-      className='absolute top-20 right-10 text-gray-100 text-5xl z-20 max-md:text-4xl max-md:right-2'
+      className='absolute top-20 right-10 text-gray-100 text-5xl z-10 max-md:text-4xl max-md:right-2'
       onClick={() => setAuthModal(true)}
     >
       <motion.div
