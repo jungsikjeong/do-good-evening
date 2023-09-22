@@ -4,11 +4,11 @@ import { SetStateAction } from 'react';
 import { GrFormNextLink } from 'react-icons/gr';
 import { GrFormClose } from 'react-icons/gr';
 
-interface LoginFromProps {
+interface SignInFormProps {
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const LoginForm = ({ setAuthModal }: LoginFromProps) => {
+const SignInForm = ({ setAuthModal }: SignInFormProps) => {
   return (
     <div className='w-full h-full p-2'>
       <div className='relative '>
@@ -72,4 +72,4 @@ const LoginForm = ({ setAuthModal }: LoginFromProps) => {
   );
 };
 
-export default LoginForm;
+export default SignInForm;

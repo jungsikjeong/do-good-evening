@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import LoginForm from './authForm/LoginForm';
+import SignInForm from './authForm/SignInForm';
 import { SetStateAction } from 'react';
 
 interface Auth {
@@ -14,7 +14,7 @@ const AuthModal = ({ authModal, setAuthModal }: Auth) => {
         <Swiper className='mySwiper'>
           <SwiperSlide>
             {/* 로그인 Form */}
-            <LoginForm setAuthModal={setAuthModal} />
+            <SignInForm setAuthModal={setAuthModal} />
           </SwiperSlide>
           <SwiperSlide>
             {/* 회원가입 Form */}
