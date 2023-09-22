@@ -14,6 +14,13 @@ import {
 const geoUrl =
   'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
 
+var timestamp = Date.now();
+var date = new Date(timestamp);
+// 우리나라 저녁 18시 기준
+// 24시간 기준 1시간마다 이동
+const time = (date.getHours() + 18) % 24;
+const standard = ((time * 100) / 24 + 50 - 16.6) % 100;
+
 const MapChart = ({ moveSectionDown, isMobile }: any) => {
   const [latitude, setLatitude] = useState<number>(); // 위도
   const [longitude, setLongitude] = useState<number>(); // 경도
@@ -103,7 +110,14 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
 
   return (
     <div className='section w-full h-screen bg-map'>
-      <div className='timeLine'></div>
+      <div
+        className='timeLine'
+        style={{ transform: `translate(-${standard}vw)` }}
+      ></div>
+      <div
+        className='subTimeLine'
+        style={{ transform: `translate(-${standard}vw)` }}
+      ></div>
 
       <ComposableMap
         className='w-full h-full absolute top-0 left-0 z-20'
