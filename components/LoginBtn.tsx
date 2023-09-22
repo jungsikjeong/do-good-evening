@@ -2,10 +2,18 @@
 
 import { AiOutlineLogin } from 'react-icons/ai';
 import { motion } from 'framer-motion';
+import { SetStateAction } from 'react';
 
-const LoginBtn = () => {
+interface LoginBtnProps {
+  setAuthModal: React.Dispatch<SetStateAction<boolean>>;
+}
+
+const LoginBtn = ({ setAuthModal }: LoginBtnProps) => {
   return (
-    <button className='ml-auto text-gray-100 text-5xl max-md:text-4xl'>
+    <button
+      className='absolute top-20 right-10 text-gray-100 text-5xl z-10 max-md:text-4xl max-md:right-2'
+      onClick={() => setAuthModal(true)}
+    >
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{
