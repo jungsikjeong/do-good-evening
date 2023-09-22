@@ -110,72 +110,143 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
         projection='geoEquirectangular'
         projectionConfig={{ scale: 150 }}
       >
-        {/* <ZoomableGroup center={[0, 0]} zoom={9}> */}
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  name={geo.properties}
-                  stroke='#000000'
-                  style={{
-                    default: {
-                      fill: '#324047',
-                      outline: 'none',
-                    },
-                    hover: {
-                      fill: 'rgb(238, 222, 207)',
-                      outline: 'none',
-                    },
-                    pressed: {
-                      fill: '#E42',
-                      outline: 'none',
-                    },
-                  }}
-                  onClick={(e) => {
-                    const { name } = geo.properties;
-                    // handleOnClick(NAME);
-                  }}
+        {isMobile ? (
+          <>
+            <ZoomableGroup center={[0, 0]} zoom={2}>
+              <Geographies geography={geoUrl}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        name={geo.properties}
+                        stroke='#000000'
+                        style={{
+                          default: {
+                            fill: '#324047',
+                            outline: 'none',
+                          },
+                          hover: {
+                            fill: 'rgb(238, 222, 207)',
+                            outline: 'none',
+                          },
+                          pressed: {
+                            fill: '#E42',
+                            outline: 'none',
+                          },
+                        }}
+                        onClick={(e) => {
+                          const { name } = geo.properties;
+                          // handleOnClick(NAME);
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+
+              {markers.map(({ img, name, coordinates, markerOffset }) => (
+                <Marker key={name} coordinates={coordinates as any}>
+                  {/* 이미지 */}
+                  <image
+                    xlinkHref={img as any}
+                    width='100'
+                    height='50'
+                    x='-50'
+                    y='-30'
+                    clipPath='url(#clipCircle)'
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <defs>
+                    <clipPath id='clipCircle'>
+                      <circle cx='0' cy='-5' r='15' />
+                    </clipPath>
+                  </defs>
+
+                  <text
+                    textAnchor='middle'
+                    y={markerOffset + 5}
+                    style={{
+                      fontFamily: 'NanumSquareRound',
+                      fill: 'white',
+                      fontSize: '8px',
+                    }}
+                  >
+                    {name}
+                  </text>
+                </Marker>
+              ))}
+            </ZoomableGroup>
+          </>
+        ) : (
+          <>
+            <Geographies geography={geoUrl}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      name={geo.properties}
+                      stroke='#000000'
+                      style={{
+                        default: {
+                          fill: '#324047',
+                          outline: 'none',
+                        },
+                        hover: {
+                          fill: 'rgb(238, 222, 207)',
+                          outline: 'none',
+                        },
+                        pressed: {
+                          fill: '#E42',
+                          outline: 'none',
+                        },
+                      }}
+                      onClick={(e) => {
+                        const { name } = geo.properties;
+                        // handleOnClick(NAME);
+                      }}
+                    />
+                  );
+                })
+              }
+            </Geographies>
+
+            {markers.map(({ img, name, coordinates, markerOffset }) => (
+              <Marker key={name} coordinates={coordinates as any}>
+                {/* 이미지 */}
+                <image
+                  xlinkHref={img as any}
+                  width='100'
+                  height='50'
+                  x='-50'
+                  y='-30'
+                  clipPath='url(#clipCircle)'
+                  style={{ objectFit: 'cover' }}
                 />
-              );
-            })
-          }
-        </Geographies>
+                <defs>
+                  <clipPath id='clipCircle'>
+                    <circle cx='0' cy='-5' r='15' />
+                  </clipPath>
+                </defs>
 
-        {markers.map(({ img, name, coordinates, markerOffset }) => (
-          <Marker key={name} coordinates={coordinates as any}>
-            {/* 이미지 */}
-            <image
-              xlinkHref={img as any}
-              width='100'
-              height='50'
-              x='-50'
-              y='-30'
-              clipPath='url(#clipCircle)'
-              style={{ objectFit: 'cover' }}
-            />
-            <defs>
-              <clipPath id='clipCircle'>
-                <circle cx='0' cy='-5' r='15' />
-              </clipPath>
-            </defs>
-
-            <text
-              textAnchor='middle'
-              y={markerOffset + 5}
-              style={{
-                fontFamily: 'NanumSquareRound',
-                fill: 'white',
-                fontSize: '8px',
-              }}
-            >
-              {name}
-            </text>
-          </Marker>
-        ))}
-        {/* </ZoomableGroup> */}
+                <text
+                  textAnchor='middle'
+                  y={markerOffset + 5}
+                  style={{
+                    fontFamily: 'NanumSquareRound',
+                    fill: 'white',
+                    fontSize: '8px',
+                  }}
+                >
+                  {name}
+                </text>
+              </Marker>
+            ))}
+          </>
+        )}
       </ComposableMap>
     </div>
   );
