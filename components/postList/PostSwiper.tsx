@@ -53,7 +53,7 @@ const PostSwiper = ({ moveSectionDown }: any) => {
     <div className='relative w-screen h-screen bg-black z-50'>
       <Swiper
         slidesPerView={1}
-        spaceBetween={30}
+        spaceBetween={0}
         loop={true}
         keyboard={{
           enabled: true,
