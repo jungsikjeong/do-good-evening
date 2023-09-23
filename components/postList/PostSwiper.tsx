@@ -3,16 +3,17 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Navigation } from 'swiper/modules';
+
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import { BiShareAlt } from 'react-icons/bi';
 import { FcLike } from 'react-icons/fc';
 import { motion } from 'framer-motion';
 
+import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import Image from 'next/image';
 
 const PostSwiper = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -66,21 +67,16 @@ const PostSwiper = ({ moveSectionDown }: any) => {
       >
         {dummyData.map((data, index) => (
           <SwiperSlide key={data.id}>
-            <div className=''>
+            <div className='swiper-wrapper'>
               {/* 포스팅 사진 */}
-              {/* <Image src={data.imgUrl} alt='이미지' fill objectFit='cover' /> */}
-              <img
-                src={data.imgUrl}
-                alt='이미지'
-                className='absolute top-0 left-0'
-              />
+              <Image src={data.imgUrl} alt='이미지' fill objectFit='cover' />
 
               {/* 포스팅 버튼 그룹 */}
               <div
                 className='fixed top-40 right-11 h-40 text-4xl text-white flex flex-col justify-between z-50
                 max-md:right-3 max-md:text-3xl max-md:justify-around max-md:top-32'
               >
-                {/* 포스팅 정보 */}
+                {/* 포스팅 정보 버튼*/}
                 <button onClick={onClick}>
                   <motion.div
                     whileHover={{ scale: 1.1 }}
@@ -93,7 +89,7 @@ const PostSwiper = ({ moveSectionDown }: any) => {
                   </motion.div>
                 </button>
 
-                {/* 좋아요 */}
+                {/* 좋아요 버튼*/}
                 <button onClick={onClick}>
                   <motion.div
                     whileHover={{ scale: 1.1 }}
@@ -106,7 +102,7 @@ const PostSwiper = ({ moveSectionDown }: any) => {
                   </motion.div>
                 </button>
 
-                {/* 공유하기 */}
+                {/* 공유하기 버튼*/}
                 <button>
                   <motion.div
                     whileHover={{ scale: 1.1 }}
