@@ -136,7 +136,7 @@ const PostList = ({ moveSectionDown }: any) => {
             </div>
 
             {/* 스크롤 버튼 */}
-            <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all max-md:hidden'>
+            <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all z-20 max-md:hidden'>
               <button onClick={() => moveSectionDown()}>
                 <img
                   src='/images/scroll_icon.png'
