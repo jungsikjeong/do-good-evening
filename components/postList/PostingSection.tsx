@@ -1,9 +1,9 @@
-import PostSwiper from './PostSwiper';
+import PostList from './PostList';
 
 const PostingSection = ({ moveSectionDown }: any) => {
   return (
     <div className='section w-full h-full'>
-      <PostSwiper moveSectionDown={moveSectionDown} />
+      <PostList moveSectionDown={moveSectionDown} />
     </div>
   );
 };

@@ -220,6 +220,7 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
                       }}
                       onClick={(e) => {
                         const { name } = geo.properties;
+                        console.log(name);
                         // handleOnClick(NAME);
                       }}
                     />
@@ -229,35 +230,36 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
             </Geographies>
 
             {markers.map(({ img, name, coordinates, markerOffset }) => (
-              <Marker key={name} coordinates={coordinates as any}>
-                {/* 이미지 */}
-                <image
-                  xlinkHref={img as any}
-                  width='100'
-                  height='50'
-                  x='-50'
-                  y='-30'
-                  clipPath='url(#clipCircle)'
-                  style={{ objectFit: 'cover' }}
-                />
-                <defs>
-                  <clipPath id='clipCircle'>
-                    <circle cx='0' cy='-5' r='15' />
-                  </clipPath>
-                </defs>
+              <></>
+              // <Marker key={name} coordinates={coordinates as any}>
+              //   {/* 이미지 */}
+              //   <image
+              //     xlinkHref={img as any}
+              //     width='100'
+              //     height='50'
+              //     x='-50'
+              //     y='-30'
+              //     clipPath='url(#clipCircle)'
+              //     style={{ objectFit: 'cover' }}
+              //   />
+              //   <defs>
+              //     <clipPath id='clipCircle'>
+              //       <circle cx='0' cy='-5' r='15' />
+              //     </clipPath>
+              //   </defs>
 
-                <text
-                  textAnchor='middle'
-                  y={markerOffset + 5}
-                  style={{
-                    fontFamily: 'NanumSquareRound',
-                    fill: 'white',
-                    fontSize: '8px',
-                  }}
-                >
-                  {name}
-                </text>
-              </Marker>
+              //   <text
+              //     textAnchor='middle'
+              //     y={markerOffset + 5}
+              //     style={{
+              //       fontFamily: 'NanumSquareRound',
+              //       fill: 'white',
+              //       fontSize: '8px',
+              //     }}
+              //   >
+              //     {name}
+              //   </text>
+              // </Marker>
             ))}
           </>
         )}
