@@ -109,7 +109,7 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
   }, []);
 
   return (
-    <div className='section w-full h-screen bg-map'>
+    <section className='section w-full h-screen bg-map'>
       <div
         className='timeLine'
         style={{ transform: `translate(-${standard}vw)` }}
@@ -263,7 +263,7 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
           </>
         )}
       </ComposableMap>
-    </div>
+    </section>
   );
 };
 

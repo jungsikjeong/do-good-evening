@@ -3,7 +3,7 @@
 import ReactFullpage from '@fullpage/react-fullpage';
 import PostingSection from './postList/PostingSection';
 import Map from './Map';
-import GroupPostings from './GroupPostings';
+import BestSection from './bestSection';
 import Rank from './Rank';
 
 type Credits = {
@@ -34,9 +34,7 @@ const FullPages = () => (
           {/* SECTION 2 : 지도 섹션 */}
           <Map moveSectionDown={() => fullpageApi.moveSectionDown()} />
 
-          <div className='section bg-red-400'>
-            <p>Section 3</p>
-          </div>
+          <BestSection moveSectionDown={() => fullpageApi.moveSectionDown()} />
         </ReactFullpage.Wrapper>
       );
     }}
