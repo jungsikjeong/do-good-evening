@@ -15,7 +15,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const PostSwiper = ({ moveSectionDown }: any) => {
+const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
     {
       id: '0',
@@ -153,4 +153,4 @@ const PostSwiper = ({ moveSectionDown }: any) => {
   );
 };
 
-export default PostSwiper;
+export default PostList;
