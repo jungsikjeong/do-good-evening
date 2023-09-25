@@ -77,7 +77,7 @@
 
 /* Map */
 .bg-map {
-  background: #282c34;
+  background: rgb(188, 188, 188);
 }
 
 .timeLine {
@@ -104,6 +104,16 @@
   position: absolute;
   right: -100%;
   top: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .timeLine {
+    display: none;
+  }
+
+  .subTimeLine {
+    display: none;
+  }
 }
 
 /* AuthModal */
@@ -142,4 +152,9 @@
 }
 .scrollable-list::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* 스크롤 바에 마우스를 올렸을 때의 색상 */
+}
+
+/* PostingSection */
+.bg__posting-section {
+  background: #324047;
 }

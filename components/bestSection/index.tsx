@@ -63,7 +63,7 @@ const BestSection = ({ moveSectionDown }: any) => {
   };
 
   return (
-    <section className='section w-full h-screen bg-map'>
+    <section className='section w-full h-screen bg__posting-section'>
       <div className='max-w-7xl m-auto '>
         <ul className='grid grid-cols-4 gap-1 '>
           <MainPosting onClick={onClick} />
