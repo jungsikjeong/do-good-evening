@@ -120,7 +120,7 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
       ></div>
 
       <ComposableMap
-        className='w-screen h-screen absolute top-0 bottom-0 left-0 z-20'
+        className='w-full h-full absolute top-0 bottom-0 left-0 z-20'
         projection='geoEquirectangular'
         projectionConfig={{ scale: 210 }}
       >
