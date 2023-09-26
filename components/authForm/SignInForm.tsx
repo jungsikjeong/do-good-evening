@@ -39,7 +39,7 @@ const SignInForm = ({ setAuthModal }: SignInFormProps) => {
 
       setAuthModal(false);
     } catch (error: any) {
-      toast.error(error?.code);
+      toast.error(error?.code, { position: toast.POSITION.TOP_CENTER });
     }
   };
 

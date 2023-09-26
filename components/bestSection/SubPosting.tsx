@@ -1,15 +1,18 @@
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { FcLikePlaceholder } from 'react-icons/fc';
 
 const SubPosting = ({ onClick }: any) => {
   return (
     <li className='relative max-md:col-span-2 overflow-hidden cursor-pointer'>
-      <Link href='/'>
-        <img
+      <Link href='/detail'>
+        <Image
           src='/images/example0.jpg'
           alt=''
           className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
+          width={306}
+          height={172}
         />
 
         <h1
