@@ -75,7 +75,11 @@ const UserBtn = () => {
       <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5'>
         <nav className='menu px-6' ref={scope}>
           <motion.button
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{
+              scale: 0.97,
+              opacity: 0.6,
+            }}
             onClick={() => setIsOpen(!isOpen)}
           >
             {userInfo?.nickname}
