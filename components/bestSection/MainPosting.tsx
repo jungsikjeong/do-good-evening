@@ -2,15 +2,17 @@ import { motion } from 'framer-motion';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import { BiShareAlt } from 'react-icons/bi';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MainPosting = ({ onClick }: any) => {
   return (
-    <li className='relative col-span-2 row-span-2 max-md:col-span-4 max-md:row-span-4 overflow-hidden cursor-pointer'>
+    <li className='relative col-span-2 row-span-2 overflow-hidden cursor-pointer'>
       <Link href='/detail'>
-        <img
+        <Image
           src='/images/example0.jpg'
           alt=''
           className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
+          fill
         />
 
         <h1 className='absolute top-0 text-white text-lg px-2 py-4'>

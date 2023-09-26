@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import AuthModal from '@/components/AuthModal';
 import FullPages from '@/components/FullPages';
-import LoginBtn from '@/components/LoginBtn';
+import LoginBtn from '@/components/Auth';
 import PostModal from '@/components/PostModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
