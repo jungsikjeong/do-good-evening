@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AuthModal from '@/components/AuthModal';
 import FullPages from '@/components/FullPages';
 import LoginBtn from '@/components/Auth';
-import PostModal from '@/components/PostModal';
+import PostModal from '@/components/Post';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -73,9 +73,7 @@ export default function Home() {
       )}
 
       {/* Post Modal(글쓰기 버튼을 클릭하면 열림) */}
-      {postModal && (
-        <PostModal postModal={postModal} setPostModal={setPostModal} />
-      )}
+      {postModal && <PostModal setPostModal={setPostModal} />}
 
       {/* 로그인 버튼 */}
       <LoginBtn setAuthModal={setAuthModal} />

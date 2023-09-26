@@ -1,4 +1,9 @@
-export const COUNTRIES = [
+export type countriesType = {
+  name: string;
+  koreanName: string;
+};
+
+export const COUNTRIES: countriesType[] = [
   {
     name: 'Afghanistan',
     koreanName: '아프가니스탄',
