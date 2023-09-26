@@ -5,13 +5,27 @@ import AuthModal from '@/components/AuthModal';
 import FullPages from '@/components/FullPages';
 import LoginBtn from '@/components/LoginBtn';
 import PostModal from '@/components/PostModal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { HiOutlinePencilSquare } from 'react-icons/hi2';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { app } from '@/firebaseApp';
+import Loading from '@/components/Loading';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { user } from '@/recoil/userAtoms';
+import PostingButton from '@/components/PostingButton';
 
 export default function Home() {
+  const auth = getAuth(app);
+
   const [authModal, setAuthModal] = useState<boolean>(false);
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(false);
+
+  const setUser = useSetRecoilState(user);
+  const userInfo = useRecoilValue(user);
 
   const handleResize = () => {
     if (window.innerWidth <= 768) {
@@ -20,6 +34,21 @@ export default function Home() {
       setIsMobile(false);
     }
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user: any) => {
+      if (user) {
+        setUser({
+          email: user?.email,
+          nickname: user?.displayName,
+          uid: user.uid,
+        });
+      } else {
+        setUser(null);
+      }
+      setInit(true);
+    });
+  }, [auth]);
 
   // 모바일 화면인지 체크
   useEffect(() => {
@@ -30,8 +59,14 @@ export default function Home() {
     };
   }, []);
 
+  if (!init) {
+    return <Loading />;
+  }
+
   return (
-    <div>
+    <>
+      <ToastContainer />
+
       {/* Auth Modal(로그인버튼을 클릭하면 열림)*/}
       {authModal && (
         <AuthModal authModal={authModal} setAuthModal={setAuthModal} />
@@ -47,27 +82,10 @@ export default function Home() {
 
       <FullPages />
 
-      {/* TO DO: user접속시에만 보이게하기 */}
       {/* 글쓰기 버튼 */}
-      {isMobile ? (
-        <footer className='fixed right-4 bottom-4'>
-          <button
-            className='text-gray-200 border rounded border-gray-200 px-4 py-3 hover:bg-gray-50 hover:text-gray-600 transition-all'
-            onClick={() => setPostModal(true)}
-          >
-            <HiOutlinePencilSquare size={25} />
-          </button>
-        </footer>
-      ) : (
-        <footer className='fixed right-16 bottom-14'>
-          <button
-            className='text-gray-200 border rounded-md border-gray-200 px-6 py-4 hover:bg-gray-50 hover:text-gray-600 transition-all'
-            onClick={() => setPostModal(true)}
-          >
-            당신의 저녁을 공유해주세요
-          </button>
-        </footer>
+      {userInfo && (
+        <PostingButton isMobile={isMobile} setPostModal={setPostModal} />
       )}
-    </div>
+    </>
   );
 }

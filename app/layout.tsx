@@ -1,4 +1,5 @@
 import './globals.css';
+import RecoilRootWrapper from '@/components/RecoilRootWrapper';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
@@ -29,7 +30,7 @@ export default function RootLayout({
             />
           </Link>
         </header>
-        {children}
+        <RecoilRootWrapper>{children}</RecoilRootWrapper>
       </body>
     </html>
   );

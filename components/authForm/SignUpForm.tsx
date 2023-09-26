@@ -1,14 +1,63 @@
 'use client';
 
-import { SetStateAction } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { GrFormNextLink } from 'react-icons/gr';
 import { GrFormClose } from 'react-icons/gr';
+import { Inputs } from './SignInForm';
+import { toast } from 'react-toastify';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from 'firebase/auth';
+import { app } from '@/firebaseApp';
 
 interface SignUpFormProps {
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const auth = getAuth(app);
+
+      if (data && data.email && data.nickname && data.password) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          data.email,
+          data.password
+        );
+
+        const user = userCredential.user;
+
+        await updateProfile(user, {
+          displayName: data.nickname,
+        });
+
+        toast.success('회원가입에 성공했습니다.', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 600,
+        });
+
+        setAuthModal(false);
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.code, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 600,
+      });
+    }
+  };
+
   return (
     <div className='w-full h-full p-2'>
       <div className='relative'>
@@ -21,7 +70,13 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
         </button>
       </div>
 
-      <form className='w-full h-full mt-14'>
+      <form
+        className='w-full h-full mt-14'
+        onSubmit={handleSubmit(onSubmit)}
+        onError={() => {
+          alert('Submission has failed.');
+        }}
+      >
         <div className='mb-4 flex items-center'>
           <label
             htmlFor='email'
@@ -30,9 +85,15 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
             <span className='align-middle text-red-500'>*</span> 이메일
           </label>
           <input
-            type='text'
-            id='email'
-            name='email'
+            type='email'
+            placeholder='이메일 입력'
+            {...register('email', {
+              required: '이메일을 입력해주세요',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '올바른 이메일 형식을 입력해주세요',
+              },
+            })}
             className='border rounded w-60 float-left px-2 py-1 text-sm'
           />
         </div>
@@ -44,10 +105,21 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
           >
             <span className='align-middle text-red-500'>*</span> 닉네임
           </label>
+
           <input
             type='text'
-            id='nickname'
-            name='nickname'
+            placeholder='닉네임 입력'
+            {...register('nickname', {
+              required: '닉네임을 입력해주세요',
+              minLength: {
+                value: 2,
+                message: '닉네임은 두글자 이상으로 해주세요',
+              },
+              maxLength: {
+                value: 5,
+                message: '닉네임은 다섯글자 이하로 해주세요',
+              },
+            })}
             className='border rounded w-60 float-left px-2 py-1 text-sm'
           />
         </div>
@@ -63,8 +135,18 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
           </label>
           <input
             type='password'
-            id='password'
-            name='password'
+            placeholder='비밀번호 입력'
+            {...register('password', {
+              required: '비밀번호를 입력해주세요',
+              maxLength: {
+                value: 6,
+                message: '6글자이하로 입력해주세요',
+              },
+              minLength: {
+                value: 6,
+                message: '6글자까지 입력해주세요.',
+              },
+            })}
             className='border rounded w-60 float-left px-2 py-1 text-sm'
           />
         </div>
@@ -79,15 +161,43 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
           </label>
           <input
             type='password'
-            id='passwordCheck'
-            name='passwordCheck'
+            placeholder='비밀번호 재확인'
+            {...register('passwordCheck', {
+              required: '비밀번호 재확인을 입력해주세요',
+              maxLength: {
+                value: 6,
+                message: '6글자이하로 입력해주세요',
+              },
+              minLength: {
+                value: 6,
+                message: '6글자까지 입력해주세요.',
+              },
+              validate: {
+                check: (val) => {
+                  if (getValues('password') !== val) {
+                    return '비밀번호가 일치하지 않습니다.';
+                  }
+                },
+              },
+            })}
             className='border rounded w-60 float-left px-2 py-1 text-sm'
           />
         </div>
-
+        {errors && (
+          <p className='text-[tomato] text-xs mt-1'>
+            {errors.email?.message ||
+              errors.nickname?.message ||
+              errors.password?.message ||
+              errors.passwordCheck?.message}
+          </p>
+        )}
         <button
-          className='w-40 py-1 mt-6 bg-gray-200 text-white rounded'
-          disabled={true}
+          className={`${
+            isValid
+              ? 'w-40 py-1 mt-6 bg-gray-300 font-bold text-white rounded transition-all'
+              : 'w-40 py-1 mt-6 bg-gray-200 text-white rounded transition-all font-normal'
+          } `}
+          disabled={isValid ? false : true}
         >
           회원가입
         </button>
