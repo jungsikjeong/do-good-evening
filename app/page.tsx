@@ -43,10 +43,10 @@ export default function Home() {
           nickname: user?.displayName,
           uid: user.uid,
         };
-        localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
       } else {
         localStorage.removeItem('user');
+        setUser(null);
       }
       setInit(false);
     });

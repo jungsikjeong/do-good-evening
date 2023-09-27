@@ -1,20 +1,22 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
-interface UserProps {
+export interface UserProps {
   email: string;
   nickname: string;
   uid: string;
 }
 
-const storedUser = localStorage.getItem('user');
+const localStorage =
+  typeof window !== 'undefined' ? window.localStorage : undefined;
 
-let defaultUser: UserProps | null = null;
-
-if (storedUser) {
-  defaultUser = JSON.parse(storedUser) as UserProps;
-}
+const { persistAtom } = recoilPersist({
+  key: 'user',
+  storage: localStorage,
+});
 
 export const user = atom<UserProps | null>({
   key: 'userState',
-  default: defaultUser,
+  default: null,
+  effects_UNSTABLE: [persistAtom],
 });

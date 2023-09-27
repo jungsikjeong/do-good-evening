@@ -97,7 +97,7 @@ const UserBtn = () => {
               로그아웃
             </li>
             <li className='p-4'>
-              <Link href='/myPage'>마이페이지</Link>
+              <Link href='/mypage'>마이페이지</Link>
             </li>
           </ul>
         </nav>
