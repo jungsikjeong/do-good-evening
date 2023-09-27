@@ -1,11 +1,8 @@
 'use client';
 
-import { SetStateAction, useEffect, useState } from 'react';
-import { COUNTRIES } from '@/utils/countryNames';
+import { SetStateAction } from 'react';
 import { GrFormClose } from 'react-icons/gr';
 import { motion } from 'framer-motion';
-import { useRecoilValue } from 'recoil';
-import { user } from '@/recoil/userAtoms';
 import PostForm from './PostForm';
 
 interface PostModalProps {
@@ -13,18 +10,6 @@ interface PostModalProps {
 }
 
 const PostModal = ({ setPostModal }: PostModalProps) => {
-  // 한글 나라이름 순서대로 정렬
-  const [sortByCountryName, setSortByCountryName] = useState(
-    [...COUNTRIES].sort((a, b) => {
-      return a.koreanName.localeCompare(b.koreanName);
-    })
-  );
-  const [countries, setCountries] = useState('대한민국');
-
-  const userInfo = useRecoilValue(user);
-
-  const onSubmit = (e: React.FormEventHandler<HTMLFormElement>) => {};
-
   return (
     <div className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center authBgColor'>
       <div
@@ -48,7 +33,7 @@ const PostModal = ({ setPostModal }: PostModalProps) => {
           </motion.div>
         </button>
 
-        <PostForm sortByCountryName={sortByCountryName} countries={countries} />
+        <PostForm setPostModal={setPostModal} />
       </div>
     </div>
   );
