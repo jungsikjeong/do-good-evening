@@ -3,7 +3,7 @@
 import { user } from '@/recoil/userAtoms';
 import { stagger, useAnimate } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { getAuth, signOut } from 'firebase/auth';
@@ -57,10 +57,13 @@ const UserBtn = () => {
   const auth = getAuth(app);
 
   const userInfo = useRecoilValue(user);
+  const setUser = useSetRecoilState(user);
 
   const onLogout = async () => {
     try {
       await signOut(auth);
+      localStorage.removeItem('user');
+      setUser(null);
 
       toast.success('로그아웃 되었습니다.', {
         position: toast.POSITION.TOP_CENTER,

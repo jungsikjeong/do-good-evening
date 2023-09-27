@@ -1,15 +1,64 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '@/firebaseApp';
+import Loading from '@/components/Loading';
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id: string;
+  uid: string;
+}
 
 const MyPage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [posts, setPosts] = useState<PostProps[]>([]);
+
   const userInfo = useRecoilValue(user);
 
-  const array = Array.from({ length: 10 }, (_, index) => index);
+  const getPosts = async () => {
+    setLoading(true);
+
+    // posts 초기화
+    setPosts([]);
+    let postRef = collection(db, 'posts');
+    let postQuery;
+
+    postQuery = query(postRef, orderBy('createdAt', 'asc'));
+
+    const datas = await getDocs(postQuery);
+
+    datas.forEach((doc) => {
+      const dataObj = { ...doc.data(), id: doc.id };
+      setPosts((prev) => [...prev, dataObj as PostProps]);
+    });
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!userInfo) {
+      toast.warn('로그인을 해주세요', { position: 'top-center' });
+      redirect('/');
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <section className='w-full h-screen bg-[#27445c]'>
       <div
@@ -19,7 +68,7 @@ const MyPage = () => {
       '
       >
         <h1 className='w-full text-white mb-4 text-left '>
-          민지님의 저녁 기록들..
+          {userInfo?.nickname}님의 저녁 기록들..
         </h1>
         <ul
           className='w-full h-[528px] overflow-y-auto scrollable-list
@@ -27,29 +76,36 @@ const MyPage = () => {
           max-xl:grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2
           '
         >
-          {array.map((data) => (
+          {loading ? (
+            <Loading />
+          ) : (
             <>
-              <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48 '>
-                <Link href='/detail'>
-                  <Image
-                    src='/images/example0.jpg'
-                    alt=''
-                    fill
-                    className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
-                  />
+              {posts.length > 0 &&
+                posts?.map((post) => (
+                  <>
+                    <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48 '>
+                      <Link href='/detail'>
+                        <Image
+                          src='/images/example0.jpg'
+                          alt=''
+                          fill
+                          className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
+                        />
 
-                  <div
-                    className='absolute bottom-4 px-2 flex flex-col 
-              text-white '
-                  >
-                    <p>8:30:48 PM EST</p>
+                        <div
+                          className='absolute bottom-4 px-2 flex flex-col 
+                    text-white '
+                        >
+                          <p>8:30:48 PM EST</p>
 
-                    <p>부천</p>
-                  </div>
-                </Link>
-              </li>
+                          <p>{post.country}</p>
+                        </div>
+                      </Link>
+                    </li>
+                  </>
+                ))}
             </>
-          ))}
+          )}
         </ul>
       </div>
     </section>

@@ -24,8 +24,8 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [init, setInit] = useState<boolean>(false);
 
-  const setUser = useSetRecoilState(user);
   const userInfo = useRecoilValue(user);
+  const setUser = useSetRecoilState(user);
 
   const handleResize = () => {
     if (window.innerWidth <= 768) {
@@ -38,13 +38,15 @@ export default function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
-        setUser({
+        const userData = {
           email: user?.email,
           nickname: user?.displayName,
           uid: user.uid,
-        });
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
       } else {
-        setUser(null);
+        localStorage.removeItem('user');
       }
       setInit(true);
     });
@@ -68,9 +70,7 @@ export default function Home() {
       <ToastContainer />
 
       {/* Auth Modal(로그인버튼을 클릭하면 열림)*/}
-      {authModal && (
-        <AuthModal authModal={authModal} setAuthModal={setAuthModal} />
-      )}
+      {authModal && <AuthModal setAuthModal={setAuthModal} />}
 
       {/* Post Modal(글쓰기 버튼을 클릭하면 열림) */}
       {postModal && <PostModal setPostModal={setPostModal} />}
