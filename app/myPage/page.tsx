@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import Loading from '@/components/Loading';
 
@@ -23,15 +22,24 @@ interface PostProps {
 const MyPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<PostProps[]>([]);
-  const [user, setUser] = useState<any>();
+
+  // Text content does not match server-rendered HTML
+  // 위의 에러때문에  recoil user state 사용을 못함
+  // useEffect에서 useState에 저장하는식으로 하려고했는데 새로고침하면 처음 언디파인이 떠서 이렇게해줬음
+  const user = JSON.parse(localStorage.getItem('user') as string);
 
   const getPosts = async () => {
     // posts 초기화
     setPosts([]);
     let postRef = collection(db, 'posts');
     let postQuery;
+    const user = JSON.parse(localStorage.getItem('user') as string);
 
-    postQuery = query(postRef, orderBy('createdAt', 'asc'));
+    postQuery = query(
+      postRef,
+      where('uid', '==', user.userState.uid),
+      orderBy('createdAt', 'asc')
+    );
 
     const datas = await getDocs(postQuery);
 
@@ -45,15 +53,6 @@ const MyPage = () => {
 
   useEffect(() => {
     const localState = JSON.parse(localStorage.getItem('user') as string);
-
-    setUser(localState);
-
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    const localState = JSON.parse(localStorage.getItem('user') as string);
-    console.log(localState);
     if (!localState || localState.userState === null) {
       toast.warn('로그인을 해주세요', { position: 'top-center' });
       redirect('/');
@@ -83,7 +82,7 @@ const MyPage = () => {
           max-xl:grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2
           '
           >
-            {posts.length > 0 &&
+            {posts.length > 0 ? (
               posts?.map((post) => (
                 <>
                   <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'>
@@ -106,7 +105,10 @@ const MyPage = () => {
                     </Link>
                   </li>
                 </>
-              ))}
+              ))
+            ) : (
+              <div className='text-white opacity-40 text-center'>기록 없음</div>
+            )}
           </ul>
         </div>
       </section>
