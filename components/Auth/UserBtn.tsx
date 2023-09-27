@@ -19,8 +19,6 @@ function useMenuAnimation(isOpen: boolean) {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
-    // animate('.arrow', { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
-
     animate(
       'ul',
       {
@@ -75,8 +73,8 @@ const UserBtn = () => {
 
   return (
     <div>
-      <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5'>
-        <nav className='menu px-6' ref={scope}>
+      <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5 h-10 '>
+        <nav className='menu relative px-6 h-0' ref={scope}>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{
@@ -91,8 +89,9 @@ const UserBtn = () => {
             style={{
               pointerEvents: isOpen ? 'auto' : 'none',
               clipPath: 'inset(10% 50% 90% 50% round 10px)',
+              zIndex: 2,
             }}
-            className='text-sm authBgColor '
+            className='text-sm authBgColor'
           >
             <li className='p-4' onClick={onLogout}>
               로그아웃

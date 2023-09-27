@@ -22,7 +22,7 @@ export default function Home() {
   const [authModal, setAuthModal] = useState<boolean>(false);
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [init, setInit] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(true);
 
   const userInfo = useRecoilValue(user);
   const setUser = useSetRecoilState(user);
@@ -48,7 +48,7 @@ export default function Home() {
       } else {
         localStorage.removeItem('user');
       }
-      setInit(true);
+      setInit(false);
     });
   }, [auth]);
 
@@ -61,7 +61,7 @@ export default function Home() {
     };
   }, []);
 
-  if (!init) {
+  if (init) {
     return <Loading />;
   }
 
