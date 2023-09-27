@@ -23,7 +23,6 @@ const SignInForm = ({ setAuthModal }: SignInFormProps) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isValid },
   } = useForm<Inputs>();
 
@@ -117,10 +116,9 @@ const SignInForm = ({ setAuthModal }: SignInFormProps) => {
         <button
           className={`${
             isValid
-              ? 'w-40 py-1 mt-6 bg-gray-300 font-bold text-white rounded transition-all'
+              ? 'w-40 py-1 mt-6 font-bold text-white rounded transition-all postBtn'
               : 'w-40 py-1 mt-6 bg-gray-200 text-white rounded transition-all font-normal'
           } `}
-          disabled={isValid ? false : true}
         >
           로그인
         </button>

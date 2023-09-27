@@ -158,3 +158,12 @@
 .bg__posting-section {
   background: #324047;
 }
+
+/* Button */
+.postBtn {
+  transition: all 0.3s;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  border-image: linear-gradient(to right, #ffd700, #ffa500);
+  border-image-slice: 1;
+  border-radius: 5px;
+}

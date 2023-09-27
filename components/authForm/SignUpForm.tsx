@@ -12,6 +12,8 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { app } from '@/firebaseApp';
+import { useSetRecoilState } from 'recoil';
+import { user } from '@/recoil/userAtoms';
 
 interface SignUpFormProps {
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
@@ -24,6 +26,8 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
     getValues,
     formState: { errors, isValid },
   } = useForm<Inputs>();
+
+  const setUser = useSetRecoilState(user);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -42,10 +46,18 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
           displayName: data.nickname,
         });
 
+        const userData = {
+          email: user.email,
+          nickname: user.displayName,
+          uid: user.uid,
+        };
+
         toast.success('회원가입에 성공했습니다.', {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 600,
         });
+
+        setUser(userData as any);
 
         setAuthModal(false);
       }
@@ -194,10 +206,9 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
         <button
           className={`${
             isValid
-              ? 'w-40 py-1 mt-6 bg-gray-300 font-bold text-white rounded transition-all'
+              ? 'w-40 py-1 mt-6 font-bold text-white rounded transition-all postBtn'
               : 'w-40 py-1 mt-6 bg-gray-200 text-white rounded transition-all font-normal'
           } `}
-          disabled={isValid ? false : true}
         >
           회원가입
         </button>

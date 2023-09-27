@@ -39,8 +39,8 @@ export default function Home() {
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
         const userData = {
-          email: user?.email,
-          nickname: user?.displayName,
+          email: user.email,
+          nickname: user.displayName,
           uid: user.uid,
         };
         setUser(userData);
