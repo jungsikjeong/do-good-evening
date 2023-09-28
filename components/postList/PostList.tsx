@@ -155,7 +155,7 @@ const PostList = ({ moveSectionDown }: any) => {
                   <div className='swiper-wrapper'>
                     {/* 포스팅 사진 */}
                     <Image
-                      src={data.imgUrl ? data.imgUrl : '/images/example0.jpg'}
+                      src={data.imgUrl ? data.imgUrl : '/images/example1.jpg'}
                       alt='이미지'
                       fill
                       objectFit='cover'
@@ -180,7 +180,9 @@ const PostList = ({ moveSectionDown }: any) => {
                       </button>
 
                       {/* 좋아요 버튼*/}
-                      <button onClick={() => onPostingLikeClick(data.id)}>
+                      <button
+                        onClick={() => onPostingLikeClick(data?.id as string)}
+                      >
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{

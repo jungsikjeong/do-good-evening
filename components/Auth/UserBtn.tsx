@@ -48,7 +48,7 @@ function useMenuAnimation(isOpen: boolean) {
   return scope;
 }
 
-const UserBtn = () => {
+const UserBtn = ({ hasNavigation = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const scope = useMenuAnimation(isOpen);
 
@@ -96,9 +96,13 @@ const UserBtn = () => {
             <li className='p-4' onClick={onLogout}>
               로그아웃
             </li>
-            <li className='p-4'>
-              <Link href='/mypage'>마이페이지</Link>
-            </li>
+            {hasNavigation ? (
+              <li className='p-4'>회원탈퇴</li>
+            ) : (
+              <li className='p-4'>
+                <Link href='/mypage'>마이페이지</Link>
+              </li>
+            )}
           </ul>
         </nav>
       </button>

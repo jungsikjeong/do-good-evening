@@ -1,23 +1,28 @@
 'use client';
 
+import { PostModalProps } from '.';
 import { v4 as uuidv4 } from 'uuid';
-import { SetStateAction, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import Image from 'next/image';
 import { COUNTRIES } from '@/utils/countryNames';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-
-import { AiOutlineCloudUpload } from 'react-icons/ai';
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { app, db } from '@/firebaseApp';
-import { addDoc, collection } from 'firebase/firestore';
+import { PostProps } from '@/app/mypage/page';
 
-interface PostFormProps {
-  setPostModal: React.Dispatch<SetStateAction<boolean>>;
-}
+import Loading from '../Loading';
 
-const PostForm = ({ setPostModal }: PostFormProps) => {
+const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
   // 한글 나라이름 순서대로 정렬
   const [sortByCountryName, setSortByCountryName] = useState(
     [...COUNTRIES].sort((a, b) => {
@@ -25,9 +30,12 @@ const PostForm = ({ setPostModal }: PostFormProps) => {
     })
   );
   const [imgUrl, setImgUrl] = useState<string | null>('');
+  const [oldImgUrl, setOldImgUrl] = useState<string | null>('');
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [country, setCountry] = useState('대한민국');
   const [content, setContent] = useState('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [post, setPost] = useState<PostProps>();
 
   const userInfo = useRecoilValue(user);
 
@@ -78,42 +86,128 @@ const PostForm = ({ setPostModal }: PostFormProps) => {
       });
     }
 
-    let imgUrl;
+    let imgAddress;
     let imgName;
-
     try {
-      if (imgFile) {
-        imgName = `${uuidv4()}_${imgFile.name}`;
+      // 만약 post 데이터가 있다면,  데이터 수정
+      if (postId) {
+        // 이미지를 업로드 및 수정했을 때
+        if (imgFile) {
+          imgName = `${uuidv4()}_${imgFile.name}`;
 
-        const storage = getStorage(app);
-        const storageRef = ref(storage, `images/${imgName}`);
+          const storage = getStorage(app);
+          const storageRef = ref(storage, `images/${imgName}`);
 
-        await uploadBytes(storageRef, imgFile);
+          if (oldImgUrl) {
+            // 기존 이미지 삭제
+            const desertRef = ref(storage, oldImgUrl as string);
+            await deleteObject(desertRef);
+          }
 
-        imgUrl = await getDownloadURL(ref(storage, `images/${imgName}`));
+          // 새로운 이미지 업로드
+          await uploadBytes(storageRef, imgFile);
+          imgAddress = await getDownloadURL(ref(storage, `images/${imgName}`));
+
+          // 게시물 업로드
+          const postRef = doc(db, 'posts', postId);
+          await updateDoc(postRef, {
+            nickname: userInfo?.nickname,
+            content: content,
+            country: country,
+            imgUrl: imgFile ? imgAddress : '',
+            updatedAt: new Date()?.toLocaleDateString('ko', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            }),
+          });
+          toast.success('게시물을 수정했습니다');
+          setIsPostEdit && setIsPostEdit(true);
+          setPostModal(false);
+        } else {
+          // 이미지 없이 내용만 수정했을 경우
+          const postRef = doc(db, 'posts', postId);
+          await updateDoc(postRef, {
+            nickname: userInfo?.nickname,
+            content: content,
+            country: country,
+            imgUrl: imgUrl ? imgUrl : '',
+            updatedAt: new Date()?.toLocaleDateString('ko', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            }),
+          });
+          toast.success('게시물을 수정했습니다');
+          setIsPostEdit && setIsPostEdit(true);
+          setPostModal(false);
+        }
+      } else {
+        // 처음 게시글 업로드할 때
+        if (imgFile) {
+          imgName = `${uuidv4()}_${imgFile.name}`;
+
+          const storage = getStorage(app);
+          const storageRef = ref(storage, `images/${imgName}`);
+
+          await uploadBytes(storageRef, imgFile);
+
+          imgAddress = await getDownloadURL(ref(storage, `images/${imgName}`));
+        }
+
+        await addDoc(collection(db, 'posts'), {
+          content: content,
+          country: country,
+          createdAt: new Date()?.toLocaleDateString('ko', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          }),
+          imgUrl: imgFile ? imgAddress : '',
+
+          nickname: userInfo?.nickname,
+          like: [],
+          uid: userInfo?.uid,
+        });
+        toast?.success('게시글을 생성했습니다.', { position: 'top-center' });
+        setPostModal(false);
       }
-
-      await addDoc(collection(db, 'posts'), {
-        content: content,
-        country: country,
-        createdAt: new Date()?.toLocaleDateString('ko', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        }),
-        imgUrl: imgFile ? imgUrl : '',
-        email: userInfo?.email,
-        nickname: userInfo?.nickname,
-        like: [],
-        uid: userInfo?.uid,
-      });
-
-      toast?.success('게시글을 생성했습니다.', { position: 'top-center' });
-      setPostModal(false);
     } catch (error: any) {
+      console.log(error);
       toast?.error(error?.code, { position: 'top-center' });
+      setIsPostEdit && setIsPostEdit(false);
     }
   };
+
+  const getPost = async (id: string) => {
+    if (id) {
+      const docRef = doc(db, 'posts', id);
+      const docSnap = await getDoc(docRef);
+      setPost({ id: docSnap.id, ...(docSnap.data() as PostProps) });
+    }
+  };
+
+  useEffect(() => {
+    if (postId) {
+      getPost(postId);
+    } else {
+      setLoading(false);
+    }
+  }, [postId]);
+
+  useEffect(() => {
+    if (post) {
+      setImgUrl(post.imgUrl);
+      setOldImgUrl(post.imgUrl);
+      setCountry(post.country);
+      setContent(post.content);
+      setLoading(false);
+    }
+  }, [post]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
