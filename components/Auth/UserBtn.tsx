@@ -3,7 +3,7 @@
 import { user } from '@/recoil/userAtoms';
 import { stagger, useAnimate } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { getAuth, signOut } from 'firebase/auth';
@@ -19,8 +19,6 @@ function useMenuAnimation(isOpen: boolean) {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
-    // animate('.arrow', { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
-
     animate(
       'ul',
       {
@@ -50,17 +48,20 @@ function useMenuAnimation(isOpen: boolean) {
   return scope;
 }
 
-const UserBtn = () => {
+const UserBtn = ({ hasNavigation = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const scope = useMenuAnimation(isOpen);
 
   const auth = getAuth(app);
 
   const userInfo = useRecoilValue(user);
+  const setUser = useSetRecoilState(user);
 
   const onLogout = async () => {
     try {
       await signOut(auth);
+      localStorage.removeItem('user');
+      setUser(null);
 
       toast.success('로그아웃 되었습니다.', {
         position: toast.POSITION.TOP_CENTER,
@@ -72,8 +73,8 @@ const UserBtn = () => {
 
   return (
     <div>
-      <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5'>
-        <nav className='menu px-6' ref={scope}>
+      <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5 h-10 '>
+        <nav className='menu relative px-6 h-0' ref={scope}>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{
@@ -88,15 +89,20 @@ const UserBtn = () => {
             style={{
               pointerEvents: isOpen ? 'auto' : 'none',
               clipPath: 'inset(10% 50% 90% 50% round 10px)',
+              zIndex: 2,
             }}
-            className='text-sm authBgColor '
+            className='text-sm authBgColor'
           >
             <li className='p-4' onClick={onLogout}>
               로그아웃
             </li>
-            <li className='p-4'>
-              <Link href='/myPage'>마이페이지</Link>
-            </li>
+            {hasNavigation ? (
+              <li className='p-4'>회원탈퇴</li>
+            ) : (
+              <li className='p-4'>
+                <Link href='/mypage'>마이페이지</Link>
+              </li>
+            )}
           </ul>
         </nav>
       </button>

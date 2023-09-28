@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
-import Link from 'next/link';
 import UserBtn from './UserBtn';
 
 interface LoginBtnProps {

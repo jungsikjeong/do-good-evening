@@ -5,11 +5,13 @@ import { GrFormClose } from 'react-icons/gr';
 import { motion } from 'framer-motion';
 import PostForm from './PostForm';
 
-interface PostModalProps {
+export interface PostModalProps {
+  postId?: string;
+  setIsPostEdit?: React.Dispatch<SetStateAction<boolean>>;
   setPostModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const PostModal = ({ setPostModal }: PostModalProps) => {
+const PostModal = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
   return (
     <div className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center authBgColor'>
       <div
@@ -33,7 +35,11 @@ const PostModal = ({ setPostModal }: PostModalProps) => {
           </motion.div>
         </button>
 
-        <PostForm setPostModal={setPostModal} />
+        <PostForm
+          setPostModal={setPostModal}
+          postId={postId}
+          setIsPostEdit={setIsPostEdit}
+        />
       </div>
     </div>
   );

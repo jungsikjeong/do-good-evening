@@ -4,11 +4,10 @@ import { SetStateAction } from 'react';
 import SignUpForm from './authForm/SignUpForm';
 
 interface AuthProps {
-  authModal: boolean;
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const AuthModal = ({ authModal, setAuthModal }: AuthProps) => {
+const AuthModal = ({ setAuthModal }: AuthProps) => {
   return (
     <div className='fixed top-0 left-0 z-20 w-full h-full flex justify-center items-center authBgColor'>
       <div className='w-96 h-96 bg-white border rounded'>
