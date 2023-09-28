@@ -74,6 +74,9 @@
   fill: #f44336;
   fill: white;
 }
+.svg_color-red path {
+  fill: #f44336;
+}
 
 /* Map */
 .bg-map {

@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import Image from 'next/image';
 import { COUNTRIES } from '@/utils/countryNames';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -78,6 +78,7 @@ const PostForm = ({ setPostModal }: PostFormProps) => {
       });
     }
 
+    let imgUrl;
     let imgName;
 
     try {
@@ -87,9 +88,9 @@ const PostForm = ({ setPostModal }: PostFormProps) => {
         const storage = getStorage(app);
         const storageRef = ref(storage, `images/${imgName}`);
 
-        await uploadBytes(storageRef, imgFile).then((snapshot) => {
-          console.log('snapshot:', snapshot);
-        });
+        await uploadBytes(storageRef, imgFile);
+
+        imgUrl = await getDownloadURL(ref(storage, `images/${imgName}`));
       }
 
       await addDoc(collection(db, 'posts'), {
@@ -100,8 +101,10 @@ const PostForm = ({ setPostModal }: PostFormProps) => {
           minute: '2-digit',
           second: '2-digit',
         }),
-        imgUrl: imgFile ? imgName : '',
+        imgUrl: imgFile ? imgUrl : '',
         email: userInfo?.email,
+        nickname: userInfo?.nickname,
+        like: [],
         uid: userInfo?.uid,
       });
 

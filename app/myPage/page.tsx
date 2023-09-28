@@ -9,7 +9,7 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import Loading from '@/components/Loading';
 
-interface PostProps {
+export interface PostProps {
   content: string;
   country: string;
   createdAt: string;
@@ -17,7 +17,13 @@ interface PostProps {
   imgUrl: string;
   id: string;
   uid: string;
+  nickname: string;
+  like: likeType[];
 }
+
+export type likeType = {
+  likeUser: string;
+};
 
 const MyPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
