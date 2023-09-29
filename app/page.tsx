@@ -7,6 +7,7 @@ import LoginBtn from '@/components/Auth';
 import PostModal from '@/components/Post';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useKakaoScript } from 'react-kakao-share';
 
 import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -17,6 +18,7 @@ import { user } from '@/recoil/userAtoms';
 import PostingButton from '@/components/PostingButton';
 
 export default function Home() {
+  useKakaoScript();
   const auth = getAuth(app);
 
   const [authModal, setAuthModal] = useState<boolean>(false);
