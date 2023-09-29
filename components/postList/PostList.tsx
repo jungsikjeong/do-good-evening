@@ -29,6 +29,8 @@ import { db } from '@/firebaseApp';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
+import { kakaoClipboard } from 'react-kakao-share';
+import example1 from '../../public/images/example1.jpg';
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -76,7 +78,7 @@ const PostList = ({ moveSectionDown }: any) => {
         const dataObj = { ...doc.data(), id: doc.id };
         dataArr.push(dataObj);
       });
-      setPosts((prev) => [...prev, ...dataArr]);
+      setPosts(dataArr);
     });
   };
 
@@ -125,6 +127,22 @@ const PostList = ({ moveSectionDown }: any) => {
       getPosts();
       toast?.success('좋아요를 눌렀습니다.', { position: 'top-center' });
     }
+  };
+
+  const onPostingShareClick = (data: any) => {
+    const image = data?.imageUrl
+      ? data?.imageUrl
+      : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbnK2OT%2Fbtsv8UuRUdf%2F2GMlvba3o7hnuSfjIOyZKk%2Fimg.jpg';
+
+    const clipData = {
+      title: '오늘 하루도 평안히..',
+      description: data?.content,
+      image: image,
+      APIKEY: process.env.NEXT_PUBLIC_KAKAO_APP_KEY,
+    };
+    console.log(clipData);
+    console.log(image);
+    kakaoClipboard(clipData);
   };
 
   useEffect(() => {
@@ -213,7 +231,7 @@ const PostList = ({ moveSectionDown }: any) => {
                       </button>
 
                       {/* 공유하기 버튼*/}
-                      <button>
+                      <button onClick={() => onPostingShareClick(data)}>
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{
@@ -291,7 +309,13 @@ const PostList = ({ moveSectionDown }: any) => {
                       </button>
 
                       {/* 좋아요 버튼*/}
-                      <button onClick={() => toast?.info('더미데이터입니다.')}>
+                      <button
+                        onClick={() =>
+                          toast?.info(
+                            '더미데이터입니다. 게시글을 새롭게 올려주세요'
+                          )
+                        }
+                      >
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{
@@ -304,7 +328,13 @@ const PostList = ({ moveSectionDown }: any) => {
                       </button>
 
                       {/* 공유하기 버튼*/}
-                      <button>
+                      <button
+                        onClick={() =>
+                          toast?.info(
+                            '더미데이터입니다. 게시글을 새롭게 올려주세요'
+                          )
+                        }
+                      >
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{
@@ -332,6 +362,18 @@ const PostList = ({ moveSectionDown }: any) => {
 
                       <p>{dummy.description}</p>
                     </div>
+                  </div>
+
+                  {/* 스크롤 버튼 */}
+                  <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all z-20 max-md:hidden'>
+                    <button onClick={() => moveSectionDown()}>
+                      <img
+                        src='/images/scroll_icon.png'
+                        alt='Scroll'
+                        width={50}
+                        height={50}
+                      />
+                    </button>
                   </div>
                 </SwiperSlide>
               </>
