@@ -30,7 +30,6 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import { kakaoClipboard } from 'react-kakao-share';
-import example1 from '../../public/images/example1.jpg';
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -71,7 +70,6 @@ const PostList = ({ moveSectionDown }: any) => {
     setPosts([]);
     let postRef = collection(db, 'posts');
 
-    // const datas = await getDocs(postQuery);
     onSnapshot(postRef, (querySnapshot) => {
       let dataArr = [] as any;
       querySnapshot.forEach((doc) => {
