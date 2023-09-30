@@ -34,7 +34,11 @@ const FullPages = () => (
           {/* SECTION 2 : 지도 섹션 */}
           <Map moveSectionDown={() => fullpageApi.moveSectionDown()} />
 
+          {/* SECTION 3 : 베스트 섹션 */}
           <BestSection moveSectionDown={() => fullpageApi.moveSectionDown()} />
+
+          {/* SECTION 4 : 랭크 섹션 */}
+          <Rank />
         </ReactFullpage.Wrapper>
       );
     }}
