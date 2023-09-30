@@ -1,17 +1,13 @@
 import { PostProps } from '@/app/mypage/page';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { FcLike } from 'react-icons/fc';
+import LikeButton from '../LikeButton';
 
 interface SubPostingProps {
-  onClick: any;
   data: PostProps;
-  userInfo: any;
 }
 
-const SubPosting = ({ onClick, data, userInfo }: SubPostingProps) => {
+const SubPosting = ({ data }: SubPostingProps) => {
   return (
     <li className='relative max-md:col-span-2 overflow-hidden cursor-pointer'>
       <Link href='/detail'>
@@ -42,32 +38,7 @@ const SubPosting = ({ onClick, data, userInfo }: SubPostingProps) => {
       </Link>
       <div className='absolute text-white right-3 bottom-3 text-3xl max-md:text-xl max-lg:text-base'>
         {/* 좋아요 버튼*/}
-        <button onClick={() => onClick()}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{
-              scale: 0.97,
-              opacity: 0.6,
-            }}
-          >
-            {data?.like?.length === 0 ? (
-              <FcLike className='svg_color' />
-            ) : (
-              <>
-                {data?.like?.map((like) =>
-                  like.likeUser === userInfo?.uid ? (
-                    <FcLikePlaceholder
-                      className='svg_color-red'
-                      key={`unLike-${like}`}
-                    />
-                  ) : (
-                    <FcLike className='svg_color' key={`like-${like}`} />
-                  )
-                )}
-              </>
-            )}
-          </motion.div>
-        </button>
+        <LikeButton post={data} />
       </div>
     </li>
   );

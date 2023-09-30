@@ -19,10 +19,7 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
-  orderBy,
-  query,
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
@@ -30,6 +27,8 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import { kakaoClipboard } from 'react-kakao-share';
+import ShareButton from '../ShareButton';
+import LikeButton from '../LikeButton';
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -196,50 +195,10 @@ const PostList = ({ moveSectionDown }: any) => {
                       </button>
 
                       {/* 좋아요 버튼*/}
-                      <button
-                        onClick={() => onPostingLikeClick(data?.id as string)}
-                      >
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{
-                            scale: 0.97,
-                            opacity: 0.6,
-                          }}
-                        >
-                          {data?.like?.length === 0 ? (
-                            <FcLike className='svg_color' />
-                          ) : (
-                            <>
-                              {data?.like?.map((like) =>
-                                like.likeUser === userInfo?.uid ? (
-                                  <FcLikePlaceholder
-                                    className='svg_color-red'
-                                    key={`unLike-${like}`}
-                                  />
-                                ) : (
-                                  <FcLike
-                                    className='svg_color'
-                                    key={`like-${like}`}
-                                  />
-                                )
-                              )}
-                            </>
-                          )}
-                        </motion.div>
-                      </button>
+                      <LikeButton post={data} />
 
                       {/* 공유하기 버튼*/}
-                      <button onClick={() => onPostingShareClick(data)}>
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{
-                            scale: 0.97,
-                            opacity: 0.6,
-                          }}
-                        >
-                          <BiShareAlt />
-                        </motion.div>
-                      </button>
+                      <ShareButton post={data} />
                     </div>
 
                     {/* 포스팅 내용 */}

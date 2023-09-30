@@ -102,72 +102,18 @@ const BestSection = ({ moveSectionDown }: any) => {
     });
   };
 
-  const onPostingLikeClick = async (postId: string) => {
-    if (!userInfo) {
-      toast?.error('로그인이 필요한 서비스입니다. 로그인해주세요!', {
-        position: 'top-center',
-      });
-      return; // 로그인되지 않았을 경우 함수 종료
-    }
-
-    const postRef = doc(db, 'posts', postId);
-    const postSnapshot = await getDoc(postRef);
-
-    if (!postSnapshot.exists()) {
-      console.error('해당 포스트가 존재하지 않습니다.');
-      return;
-    }
-
-    // 기존 좋아요 목록을 가져옴
-    const post = postSnapshot.data();
-    const likes = (post?.like as likeType[]) || [];
-
-    // 좋아요를 이미 누른 경우 중복으로 추가하지 않도록 체크
-    const userLikeIndex = likes.findIndex(
-      (like) => like.likeUser === userInfo.uid
-    );
-
-    if (userLikeIndex !== -1) {
-      likes.splice(userLikeIndex, 1); // 해당 사용자의 좋아요 정보 제거
-      // 업데이트된 데이터를 저장
-      await updateDoc(postRef, {
-        like: likes,
-      });
-      getPosts();
-      toast?.success('좋아요를 취소했습니다.', { position: 'top-center' });
-    } else {
-      // 좋아요를 누르지 않은 경우 새로운 좋아요 정보 추가
-      likes.push({ likeUser: userInfo.uid });
-      // 업데이트된 데이터를 저장
-      await updateDoc(postRef, {
-        like: likes,
-      });
-      getPosts();
-      toast?.success('좋아요를 눌렀습니다.', { position: 'top-center' });
-    }
-  };
   useEffect(() => {
     getPosts();
   }, []);
-  console.log(posts[0]);
-  console.log(posts.slice(1, 5));
+
   return (
     <section className='section flex justify-center items-center w-full h-full bg__posting-section'>
       <div className='max-w-7xl m-auto '>
         <ul className='grid grid-cols-4 gap-1 '>
-          <MainPosting
-            data={posts[0]}
-            onClick={() => onPostingLikeClick(posts[0]?.id as any)}
-            userInfo={userInfo}
-          />
+          <MainPosting data={posts[0]} />
 
           {posts.slice(1, 5).map((data) => (
-            <SubPosting
-              key={data.id}
-              data={data}
-              onClick={() => onPostingLikeClick(data?.id as any)}
-              userInfo={userInfo}
-            />
+            <SubPosting key={data.id} data={data} />
           ))}
         </ul>
       </div>

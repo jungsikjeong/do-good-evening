@@ -1,18 +1,14 @@
-import { motion } from 'framer-motion';
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { BiShareAlt } from 'react-icons/bi';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PostProps } from '@/app/mypage/page';
-import { FcLike } from 'react-icons/fc';
+import ShareButton from '../ShareButton';
+import LikeButton from '../LikeButton';
 
 interface MainPostingProps {
-  onClick: any;
   data: PostProps;
-  userInfo: any;
 }
 
-const MainPosting = ({ onClick, data, userInfo }: MainPostingProps) => {
+const MainPosting = ({ data }: MainPostingProps) => {
   return (
     <li className='relative col-span-2 row-span-2 overflow-hidden cursor-pointer'>
       <Link href='/detail'>
@@ -38,45 +34,10 @@ const MainPosting = ({ onClick, data, userInfo }: MainPostingProps) => {
       </Link>
       <div className='absolute text-white right-4 bottom-4 text-3xl max-md:text-2xl'>
         {/* 좋아요 버튼*/}
-        <button onClick={() => onClick()}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{
-              scale: 0.97,
-              opacity: 0.6,
-            }}
-          >
-            {data?.like?.length === 0 ? (
-              <FcLike className='svg_color' />
-            ) : (
-              <>
-                {data?.like?.map((like) =>
-                  like.likeUser === userInfo?.uid ? (
-                    <FcLikePlaceholder
-                      className='svg_color-red'
-                      key={`unLike-${like}`}
-                    />
-                  ) : (
-                    <FcLike className='svg_color' key={`like-${like}`} />
-                  )
-                )}
-              </>
-            )}
-          </motion.div>
-        </button>
+        <LikeButton post={data} />
 
         {/* 공유하기 버튼*/}
-        <button>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{
-              scale: 0.97,
-              opacity: 0.6,
-            }}
-          >
-            <BiShareAlt />
-          </motion.div>
-        </button>
+        <ShareButton post={data} />
       </div>
     </li>
   );
