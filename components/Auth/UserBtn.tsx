@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from '@/firebaseApp';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 /** 유저가 접속했을때 유저 닉네임 표시해주는 컴포넌트,
  *  유저 이름을 화면에 표시해주고, 클릭시 마이페이지, 로그아웃 버튼이 나타남 */
@@ -52,6 +53,8 @@ const UserBtn = ({ hasNavigation = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const scope = useMenuAnimation(isOpen);
 
+  const router = useRouter();
+
   const auth = getAuth(app);
 
   const userInfo = useRecoilValue(user);
@@ -62,6 +65,8 @@ const UserBtn = ({ hasNavigation = false }) => {
       await signOut(auth);
       localStorage.removeItem('user');
       setUser(null);
+
+      hasNavigation && router.push('/');
 
       toast.success('로그아웃 되었습니다.', {
         position: toast.POSITION.TOP_CENTER,

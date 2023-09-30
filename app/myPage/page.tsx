@@ -145,6 +145,7 @@ const MyPage = () => {
           '
         >
           {user && <UserBtn hasNavigation={true} />}
+
           <h1 className='w-full text-white mb-4 text-left '>
             {user && user?.userState?.nickname}님의 저녁 기록들..
           </h1>
