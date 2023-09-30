@@ -1,23 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { BiShareAlt } from 'react-icons/bi';
 import MainPosting from './MainPosting';
 import SubPosting from './SubPosting';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
-import { toast } from 'react-toastify';
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  updateDoc,
-} from 'firebase/firestore';
-import { PostProps, likeType } from '@/app/mypage/page';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { PostProps } from '@/app/mypage/page';
 import { db } from '@/firebaseApp';
 
 const BestSection = ({ moveSectionDown }: any) => {
@@ -78,7 +67,9 @@ const BestSection = ({ moveSectionDown }: any) => {
   const userInfo = useRecoilValue(user);
 
   // 좋아요 많은 순서로 정렬
-  const sortedData = [...posts].sort((a, b) => b.like.length - a.like.length);
+  const sortedDummyData = [...dummyData].sort(
+    (a, b) => b.like.length - a.like.length
+  );
 
   const getPosts = () => {
     // posts 초기화
@@ -94,7 +85,7 @@ const BestSection = ({ moveSectionDown }: any) => {
       });
 
       // 좋아요 수를 기준으로 정렬
-      const sortData = dataArr
+      const sortData: any = dataArr
         .sort((a, b) => b.like.length - a.like.length)
         .slice(0, 5);
 

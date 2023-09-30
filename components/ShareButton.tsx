@@ -24,7 +24,7 @@ const ShareButton = ({ post }: ShareButtonProps) => {
   };
 
   return (
-    <button onClick={() => onPostingShareClick(post)}>
+    <button onClick={() => onPostingShareClick(post)} className='relative z-30'>
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{
