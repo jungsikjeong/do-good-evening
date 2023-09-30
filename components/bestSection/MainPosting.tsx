@@ -37,7 +37,7 @@ const MainPosting = ({ data }: MainPostingProps) => {
         <LikeButton post={data} />
 
         {/* 공유하기 버튼*/}
-        <ShareButton post={data}/>
+        <ShareButton post={data} />
       </div>
     </li>
   );

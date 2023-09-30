@@ -97,19 +97,32 @@ const BestSection = ({ moveSectionDown }: any) => {
     getPosts();
   }, []);
 
-  return (
-    <section className='section flex justify-center items-center w-full h-full bg__posting-section'>
-      <div className='max-w-7xl m-auto '>
-        <ul className='grid grid-cols-4 gap-1 '>
-          <MainPosting data={posts[0]} />
+  if (posts.length === 0 || !posts) {
+    return (
+      <section className='section flex justify-center items-center w-full h-full bg__posting-section'>
+        <div className='max-w-sm  m-auto '>
+          <div className='text-white font-bold text-center p-4 leading-6'>
+            '베스트 게시글'에 올라온 게시글이 없습니다. 게시글에 좋아요를 눌러
+            직접 베스트 게시글을 만들어주세요
+          </div>
+        </div>
+      </section>
+    );
+  } else {
+    return (
+      <section className='section flex justify-center items-center w-full h-full bg__posting-section'>
+        <div className='max-w-7xl m-auto '>
+          <ul className='grid grid-cols-4 gap-1 '>
+            <MainPosting data={posts[0]} />
 
-          {posts.slice(1, 5).map((data) => (
-            <SubPosting key={data.id} data={data} />
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+            {posts?.slice(1, 5).map((data) => (
+              <SubPosting key={data.id} data={data} />
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
 };
 
 export default BestSection;
