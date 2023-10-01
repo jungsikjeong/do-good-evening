@@ -11,7 +11,6 @@ interface MainPostingProps {
 
 const MainPosting = ({ data, styles }: MainPostingProps) => {
   return (
-    // <li className='relative col-span-2 row-span-2 overflow-hidden cursor-pointer'>
     <li
       className={
         styles
