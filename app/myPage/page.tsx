@@ -19,6 +19,12 @@ import Loading from '@/components/Loading';
 import UserBtn from '@/components/Auth/UserBtn';
 import PostModal from '@/components/Post';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  isPostDetailModal,
+  postDetailInfo,
+} from '@/recoil/postDetailModalAtoms';
+import PostDetailModal from '@/components/PostDetailModal';
 
 export interface PostProps {
   content: string;
@@ -42,6 +48,10 @@ const MyPage = () => {
   const [postId, setPostId] = useState<string>('');
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPostEdit, setIsPostEdit] = useState<boolean>(false); // 포스트가 변경되었는지 확인
+
+  const postModalState = useRecoilValue(isPostDetailModal);
+  const setPostModalState = useSetRecoilState(isPostDetailModal);
+  const setPostInfo = useSetRecoilState(postDetailInfo);
 
   // Text content does not match server-rendered HTML
   // 위의 에러때문에  recoil user state 사용을 못함
@@ -69,6 +79,11 @@ const MyPage = () => {
     });
 
     setLoading(false);
+  };
+
+  const onPostClick = (data: PostProps) => {
+    setPostModalState((prev) => !prev);
+    setPostInfo(data);
   };
 
   const onEditBtnClick = (postId: string) => {
@@ -135,7 +150,12 @@ const MyPage = () => {
         />
       )}
 
-      <section className='w-full h-screen bg-[#27445c] overflow-hidden'>
+      <section
+        className='w-full h-screen bg-[#27445c] overflow-hidden'
+        onClick={() => postModalState && setPostModalState(false)}
+      >
+        {postModalState && <PostDetailModal />}
+
         <div
           className='relative w-full max-w-7xl h-full m-auto p-4
           flex flex-col items-center justify-center pt-24
@@ -157,7 +177,10 @@ const MyPage = () => {
             {posts.length > 0 ? (
               posts?.map((post) => (
                 <div className='flex flex-col' key={post.id}>
-                  <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'>
+                  <li
+                    className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'
+                    onClick={() => onPostClick(post)}
+                  >
                     <Image
                       src={post.imgUrl ? post.imgUrl : '/images/example1.jpg'}
                       alt=''
