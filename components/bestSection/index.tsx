@@ -8,6 +8,7 @@ import { user } from '@/recoil/userAtoms';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { PostProps } from '@/app/mypage/page';
 import { db } from '@/firebaseApp';
+import Image from 'next/image';
 
 const BestSection = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -115,9 +116,12 @@ const BestSection = ({ moveSectionDown }: any) => {
   } else {
     return (
       <section className='section flex justify-center items-center w-full h-full bg__posting-section'>
-        <div className='max-w-7xl m-auto '>
+        <div className='max-w-7xl  m-auto'>
           <ul className='grid grid-cols-4 gap-1 '>
-            <MainPosting data={posts[0]} />
+            <MainPosting
+              data={posts[0]}
+              styles={posts.length === 1 ? true : false}
+            />
 
             {posts?.slice(1, 5).map((data) => (
               <SubPosting key={data.id} data={data} />

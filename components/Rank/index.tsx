@@ -3,12 +3,12 @@ import { BiLike } from 'react-icons/bi';
 import { ImPencil2 } from 'react-icons/im';
 
 const Rank = () => {
-  const ranking = new Array(7).fill(null);
+  const ranking = Array.from(Array(7), (_, index) => index + 1);
 
   return (
     <section className='section w-full h-full bg-[#282c34]'>
-      <ul className='max-w-5xl flex m-auto gap-10 text-gray-200'>
-        <li className='w-full flex flex-col gap-1 h-80 overflow-y-auto scrollable-list'>
+      <ul className='max-w-5xl flex m-auto gap-10 text-gray-200 max-md:flex-wrap max-md:h-[350px] p-4'>
+        <li className='w-full flex flex-col gap-1 h-96 overflow-y-auto scrollable-list p-2'>
           <div className='flex items-center gap-1 text-lg py-1 border-b-2 border-gray-400'>
             <h3>가장 많이 저녁을 나눈 두굿이들</h3>
             <GiSunset />
@@ -50,7 +50,7 @@ const Rank = () => {
           {/* 가장 많이 주목을 받은 유저 4~10위 */}
           {ranking.map((data, index) => (
             <div
-              className='flex item-center p-2 border-b-[1px] border-gray-400'
+              className='flex item-center p-2 border-b-[1px] border-gray-400 last:border-0'
               key={data}
             >
               <p className='mr-auto'>
@@ -66,7 +66,7 @@ const Rank = () => {
           ))}
         </li>
 
-        <li className='w-full flex flex-col gap-1 h-80 overflow-y-auto scrollable-list'>
+        <li className='w-full flex flex-col gap-1 h-96 overflow-y-auto scrollable-list p-2'>
           <div className='flex items-center gap-1 text-lg py-1 border-b-2 border-gray-400'>
             <h3>가장 많이 저녁을 나눈 나라들</h3>
             <GiSunset />
@@ -109,7 +109,7 @@ const Rank = () => {
 
           {ranking.map((data, index) => (
             <div
-              className='flex item-center p-2 border-b-[1px] border-gray-400'
+              className='flex item-center p-2 border-b-[1px] border-gray-400 last:border-0'
               key={data}
             >
               <div className='flex gap-2 mr-auto'>{index + 4} 대한민국</div>
@@ -122,7 +122,7 @@ const Rank = () => {
           ))}
         </li>
 
-        <li className='w-full flex flex-col gap-1 h-80 overflow-y-auto scrollable-list'>
+        <li className='w-full flex flex-col gap-1 h-96 overflow-y-auto scrollable-list p-2'>
           <div className='flex items-center gap-1 text-lg py-1 border-b-2 border-gray-400'>
             <h3>가장 많이 주목을 받은 저녁</h3>
             <GiSunset />
@@ -165,7 +165,7 @@ const Rank = () => {
 
           {ranking.map((data, index) => (
             <div
-              className='flex item-center p-2 border-b-[1px] border-gray-400'
+              className='flex item-center p-2 border-b-[1px] border-gray-400 last:border-0'
               key={data}
             >
               <div className='flex gap-2 mr-auto'>{index + 4} 대한민국</div>

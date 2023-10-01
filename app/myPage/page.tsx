@@ -149,6 +149,7 @@ const MyPage = () => {
           <h1 className='w-full text-white mb-4 text-left '>
             {user && user?.userState?.nickname}님의 저녁 기록들..
           </h1>
+
           <ul
             className='w-full h-[528px] overflow-y-auto scrollable-list
           grid grid-cols-5 gap-4

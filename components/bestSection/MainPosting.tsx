@@ -6,11 +6,19 @@ import LikeButton from '../LikeButton';
 
 interface MainPostingProps {
   data: PostProps;
+  styles: boolean;
 }
 
-const MainPosting = ({ data }: MainPostingProps) => {
+const MainPosting = ({ data, styles }: MainPostingProps) => {
   return (
-    <li className='relative col-span-2 row-span-2 overflow-hidden cursor-pointer'>
+    // <li className='relative col-span-2 row-span-2 overflow-hidden cursor-pointer'>
+    <li
+      className={
+        styles
+          ? `relative w-96 h-[250px] col-span-2 row-span-2 overflow-hidden cursor-pointer`
+          : 'relative max-md:h-auto col-span-2 row-span-2 overflow-hidden cursor-pointer'
+      }
+    >
       <Link href='/detail'>
         <Image
           src='/images/example0.jpg'
