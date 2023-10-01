@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { toast } from 'react-toastify';
 import {
@@ -11,7 +10,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  onSnapshot,
   orderBy,
   query,
   where,
@@ -160,21 +158,19 @@ const MyPage = () => {
               posts?.map((post) => (
                 <div className='flex flex-col' key={post.id}>
                   <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'>
-                    <Link href='/detail' key={post.id}>
-                      <Image
-                        src={post.imgUrl ? post.imgUrl : '/images/example1.jpg'}
-                        alt=''
-                        fill
-                        className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
-                      />
-                      <div
-                        className='absolute bottom-4 px-2 flex flex-col 
+                    <Image
+                      src={post.imgUrl ? post.imgUrl : '/images/example1.jpg'}
+                      alt=''
+                      fill
+                      className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
+                    />
+                    <div
+                      className='absolute bottom-4 px-2 flex flex-col 
                     text-white '
-                      >
-                        <p>{post.createdAt.slice(12)} EST</p>
-                        <p>{post.country}</p>
-                      </div>
-                    </Link>
+                    >
+                      <p>{post.createdAt.slice(12)} EST</p>
+                      <p>{post.country}</p>
+                    </div>
                   </li>
                   <div className='flex justify-end gap-4 p-2 text-white'>
                     <button
