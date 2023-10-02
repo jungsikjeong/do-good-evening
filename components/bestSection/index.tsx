@@ -5,7 +5,13 @@ import MainPosting from './MainPosting';
 import SubPosting from './SubPosting';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
-import { collection, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
 import { PostProps } from '@/app/mypage/page';
 import { db } from '@/firebaseApp';
 import Image from 'next/image';
@@ -28,6 +34,9 @@ const BestSection = ({ moveSectionDown }: any) => {
     setPosts([]);
     let postRef = collection(db, 'posts');
 
+    const testRef = collection(db, 'users');
+    const q = query(testRef, orderBy('createdAt', 'asc'));
+    console.log(q);
     // const datas = await getDocs(postQuery);
     onSnapshot(postRef, (querySnapshot) => {
       let dataArr = [] as PostProps[];

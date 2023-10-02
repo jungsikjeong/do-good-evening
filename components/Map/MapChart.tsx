@@ -9,8 +9,6 @@ import {
   ZoomableGroup,
 } from 'react-simple-maps';
 
-// TO DO: isMobile일때 화면 확대 축소할 수 있는거 개발하기
-
 const geoUrl =
   'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
 
@@ -22,8 +20,6 @@ const time = (date.getHours() + 18) % 24;
 const standard = ((time * 100) / 24 + 50 - 16.6) % 100;
 
 const MapChart = ({ moveSectionDown, isMobile }: any) => {
-  const [latitude, setLatitude] = useState<number>(); // 위도
-  const [longitude, setLongitude] = useState<number>(); // 경도
   const [markers, setMarkers] = useState([
     {
       markerOffset: 15,
@@ -93,20 +89,6 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
       coordinates: [128.59, 40.33],
     },
   ]);
-
-  useEffect(() => {
-    // 현재 사용자의 위도와 경도 저장
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLatitude(latitude);
-        setLongitude(longitude);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }, []);
 
   return (
     <section className='section w-full h-screen bg-map'>

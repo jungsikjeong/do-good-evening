@@ -6,10 +6,26 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { getAuth, signOut } from 'firebase/auth';
-import { app } from '@/firebaseApp';
+import {
+  deleteUser,
+  getAuth,
+  reauthenticateWithCredential,
+  signOut,
+} from 'firebase/auth';
+import { app, db } from '@/firebaseApp';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  where,
+  writeBatch,
+} from 'firebase/firestore';
+import { deleteObject, getStorage, ref } from 'firebase/storage';
 
 /** 유저가 접속했을때 유저 닉네임 표시해주는 컴포넌트,
  *  유저 이름을 화면에 표시해주고, 클릭시 마이페이지, 로그아웃 버튼이 나타남 */
@@ -76,6 +92,51 @@ const UserBtn = ({ hasNavigation = false }) => {
     }
   };
 
+  const onUserWithdrawal = async () => {
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      const user = auth.currentUser;
+      const storage = getStorage(app);
+
+      if (user) {
+        try {
+          // 게시물 및 이미지 삭제
+          const postsRef = collection(db, 'posts');
+          const postQuery = query(postsRef, where('uid', '==', user?.uid));
+          const datas = await getDocs(postQuery);
+
+          datas.forEach(async (doc) => {
+            try {
+              // 게시글 삭제
+              await deleteDoc(doc.ref);
+
+              // 이미지 삭제
+              const desertRef = ref(storage, doc.data()?.imgUrl);
+              await deleteObject(desertRef);
+            } catch (error: any) {
+              console.error('Error deleting document:', error);
+              toast.error(error?.code, { position: 'top-center' });
+            }
+          });
+
+          // 사용자 삭제
+          await deleteUser(user);
+
+          // 로그아웃
+          await signOut(auth);
+
+          router.push('/');
+          // 회원 탈퇴 완료 메시지
+          toast?.success('회원 탈퇴가 완료되었습니다.', {
+            position: 'top-center',
+          });
+        } catch (error: any) {
+          console.error('Error:', error);
+          toast?.error(error?.code, { position: 'top-center' });
+        }
+      }
+    }
+  };
+
   return (
     <div>
       <button className='absolute top-20 right-0 text-gray-100 text-xl z-10 max-md:-right-5 h-10 '>
@@ -102,7 +163,9 @@ const UserBtn = ({ hasNavigation = false }) => {
               로그아웃
             </li>
             {hasNavigation ? (
-              <li className='p-4'>회원탈퇴</li>
+              <li className='p-4' onClick={onUserWithdrawal}>
+                회원탈퇴
+              </li>
             ) : (
               <li className='p-4'>
                 <Link href='/mypage'>마이페이지</Link>
