@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Navigation } from 'swiper/modules';
 
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import { FcLikePlaceholder } from 'react-icons/fc';
 import { BiShareAlt } from 'react-icons/bi';
 import { FcLike } from 'react-icons/fc';
 import { motion } from 'framer-motion';
@@ -14,21 +13,16 @@ import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { PostProps, likeType } from '@/app/mypage/page';
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  updateDoc,
-} from 'firebase/firestore';
+import { PostProps } from '@/app/mypage/page';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { toast } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
-import { kakaoClipboard } from 'react-kakao-share';
 import ShareButton from '../ShareButton';
 import LikeButton from '../LikeButton';
+import { isPostInfoModal, postInfo } from '@/recoil/postInfoModalAtoms';
+import PostInfoModal from '../PostInfoModal';
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -63,6 +57,9 @@ const PostList = ({ moveSectionDown }: any) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
 
   const userInfo = useRecoilValue(user);
+  const postModalState = useRecoilValue(isPostInfoModal);
+  const setPostModalState = useSetRecoilState(isPostInfoModal);
+  const setPostInfo = useSetRecoilState(postInfo);
 
   const getPosts = () => {
     // posts 초기화
@@ -79,67 +76,9 @@ const PostList = ({ moveSectionDown }: any) => {
     });
   };
 
-  const onPostingInfoClick = () => {};
-
-  const onPostingLikeClick = async (postId: string) => {
-    if (!userInfo) {
-      toast?.error('로그인이 필요한 서비스입니다. 로그인해주세요!', {
-        position: 'top-center',
-      });
-      return; // 로그인되지 않았을 경우 함수 종료
-    }
-
-    const postRef = doc(db, 'posts', postId);
-    const postSnapshot = await getDoc(postRef);
-
-    if (!postSnapshot.exists()) {
-      console.error('해당 포스트가 존재하지 않습니다.');
-      return;
-    }
-
-    // 기존 좋아요 목록을 가져옴
-    const post = postSnapshot.data();
-    const likes = (post?.like as likeType[]) || [];
-
-    // 좋아요를 이미 누른 경우 중복으로 추가하지 않도록 체크
-    const userLikeIndex = likes.findIndex(
-      (like) => like.likeUser === userInfo.uid
-    );
-
-    if (userLikeIndex !== -1) {
-      likes.splice(userLikeIndex, 1); // 해당 사용자의 좋아요 정보 제거
-      // 업데이트된 데이터를 저장
-      await updateDoc(postRef, {
-        like: likes,
-      });
-      getPosts();
-      toast?.success('좋아요를 취소했습니다.', { position: 'top-center' });
-    } else {
-      // 좋아요를 누르지 않은 경우 새로운 좋아요 정보 추가
-      likes.push({ likeUser: userInfo.uid });
-      // 업데이트된 데이터를 저장
-      await updateDoc(postRef, {
-        like: likes,
-      });
-      getPosts();
-      toast?.success('좋아요를 눌렀습니다.', { position: 'top-center' });
-    }
-  };
-
-  const onPostingShareClick = (data: any) => {
-    const image = data?.imageUrl
-      ? data?.imageUrl
-      : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbnK2OT%2Fbtsv8UuRUdf%2F2GMlvba3o7hnuSfjIOyZKk%2Fimg.jpg';
-
-    const clipData = {
-      title: '오늘 하루도 평안히..',
-      description: data?.content,
-      image: image,
-      APIKEY: process.env.NEXT_PUBLIC_KAKAO_APP_KEY,
-    };
-    console.log(clipData);
-    console.log(image);
-    kakaoClipboard(clipData);
+  const onPostingInfoClick = (data: any) => {
+    setPostModalState((prev) => !prev);
+    setPostInfo(data);
   };
 
   useEffect(() => {
@@ -147,7 +86,11 @@ const PostList = ({ moveSectionDown }: any) => {
   }, []);
 
   return (
-    <div className='relative w-screen h-screen bg-black z-50'>
+    <div
+      className='relative w-screen h-screen bg-black z-50'
+      onClick={() => postModalState && setPostModalState(false)}
+    >
+      {postModalState && <PostInfoModal />}
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -182,7 +125,7 @@ const PostList = ({ moveSectionDown }: any) => {
                 max-md:right-3 max-md:text-3xl max-md:justify-around max-md:top-32'
                     >
                       {/* 포스팅 정보 버튼*/}
-                      <button onClick={() => onPostingInfoClick()}>
+                      <button onClick={() => onPostingInfoClick(data)}>
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{
@@ -253,7 +196,13 @@ const PostList = ({ moveSectionDown }: any) => {
         max-md:right-3 max-md:text-3xl max-md:justify-around max-md:top-32'
                     >
                       {/* 포스팅 정보 버튼*/}
-                      <button onClick={() => onPostingInfoClick()}>
+                      <button
+                        onClick={() =>
+                          toast?.info(
+                            '더미데이터입니다. 게시글을 새롭게 올려주세요'
+                          )
+                        }
+                      >
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{

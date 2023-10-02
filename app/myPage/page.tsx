@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { toast } from 'react-toastify';
 import {
@@ -11,7 +10,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  onSnapshot,
   orderBy,
   query,
   where,
@@ -21,6 +19,12 @@ import Loading from '@/components/Loading';
 import UserBtn from '@/components/Auth/UserBtn';
 import PostModal from '@/components/Post';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  isPostDetailModal,
+  postDetailInfo,
+} from '@/recoil/postDetailModalAtoms';
+import PostDetailModal from '@/components/PostDetailModal';
 
 export interface PostProps {
   content: string;
@@ -44,6 +48,10 @@ const MyPage = () => {
   const [postId, setPostId] = useState<string>('');
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPostEdit, setIsPostEdit] = useState<boolean>(false); // 포스트가 변경되었는지 확인
+
+  const postModalState = useRecoilValue(isPostDetailModal);
+  const setPostModalState = useSetRecoilState(isPostDetailModal);
+  const setPostInfo = useSetRecoilState(postDetailInfo);
 
   // Text content does not match server-rendered HTML
   // 위의 에러때문에  recoil user state 사용을 못함
@@ -71,6 +79,11 @@ const MyPage = () => {
     });
 
     setLoading(false);
+  };
+
+  const onPostClick = (data: PostProps) => {
+    setPostModalState((prev) => !prev);
+    setPostInfo(data);
   };
 
   const onEditBtnClick = (postId: string) => {
@@ -137,7 +150,12 @@ const MyPage = () => {
         />
       )}
 
-      <section className='w-full h-screen bg-[#27445c] overflow-hidden'>
+      <section
+        className='w-full h-screen bg-[#27445c] overflow-hidden'
+        onClick={() => postModalState && setPostModalState(false)}
+      >
+        {postModalState && <PostDetailModal />}
+
         <div
           className='relative w-full max-w-7xl h-full m-auto p-4
           flex flex-col items-center justify-center pt-24
@@ -145,9 +163,11 @@ const MyPage = () => {
           '
         >
           {user && <UserBtn hasNavigation={true} />}
+
           <h1 className='w-full text-white mb-4 text-left '>
             {user && user?.userState?.nickname}님의 저녁 기록들..
           </h1>
+
           <ul
             className='w-full h-[528px] overflow-y-auto scrollable-list
           grid grid-cols-5 gap-4
@@ -157,22 +177,23 @@ const MyPage = () => {
             {posts.length > 0 ? (
               posts?.map((post) => (
                 <div className='flex flex-col' key={post.id}>
-                  <li className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'>
-                    <Link href='/detail' key={post.id}>
-                      <Image
-                        src={post.imgUrl ? post.imgUrl : '/images/example1.jpg'}
-                        alt=''
-                        fill
-                        className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
-                      />
-                      <div
-                        className='absolute bottom-4 px-2 flex flex-col 
+                  <li
+                    className='relative h-64 overflow-hidden cursor-pointer max-sm:h-48'
+                    onClick={() => onPostClick(post)}
+                  >
+                    <Image
+                      src={post.imgUrl ? post.imgUrl : '/images/example1.jpg'}
+                      alt=''
+                      fill
+                      className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
+                    />
+                    <div
+                      className='absolute bottom-4 px-2 flex flex-col 
                     text-white '
-                      >
-                        <p>{post.createdAt.slice(12)} EST</p>
-                        <p>{post.country}</p>
-                      </div>
-                    </Link>
+                    >
+                      <p>{post.createdAt.slice(12)} EST</p>
+                      <p>{post.country}</p>
+                    </div>
                   </li>
                   <div className='flex justify-end gap-4 p-2 text-white'>
                     <button
