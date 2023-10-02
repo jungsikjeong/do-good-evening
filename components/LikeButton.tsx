@@ -7,6 +7,7 @@ import {
   collection,
   doc,
   getDoc,
+  increment,
   onSnapshot,
   updateDoc,
 } from 'firebase/firestore';
@@ -80,6 +81,11 @@ const LikeButton = ({ post }: LikeButtonProps) => {
       // 업데이트된 데이터를 저장
       await updateDoc(postRef, {
         like: likes,
+      });
+      // 유저 도큐먼트에서 likeCount 1증가
+      const userRef = doc(db, 'users', userInfo?.uid);
+      await updateDoc(userRef, {
+        likeCount: increment(1),
       });
       getPosts();
       toast?.success('좋아요를 눌렀습니다.', { position: 'top-center' });

@@ -34,10 +34,6 @@ const BestSection = ({ moveSectionDown }: any) => {
     setPosts([]);
     let postRef = collection(db, 'posts');
 
-    const testRef = collection(db, 'users');
-    const q = query(testRef, orderBy('createdAt', 'asc'));
-    console.log(q);
-    // const datas = await getDocs(postQuery);
     onSnapshot(postRef, (querySnapshot) => {
       let dataArr = [] as PostProps[];
       querySnapshot.forEach((doc) => {

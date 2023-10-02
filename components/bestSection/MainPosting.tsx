@@ -17,13 +17,13 @@ const MainPosting = ({ data, styles, onClick }: MainPostingProps) => {
           ? `relative w-96 h-[250px] col-span-2 row-span-2 overflow-hidden cursor-pointer`
           : 'relative max-md:h-auto col-span-2 row-span-2 overflow-hidden cursor-pointer'
       }
-      onClick={() => onClick(data)}
     >
       <Image
         src='/images/example0.jpg'
         alt=''
         className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
         fill
+        onClick={() => onClick(data)}
       />
 
       <h1 className='absolute top-0 text-white text-lg px-2 py-4'>
@@ -38,7 +38,7 @@ const MainPosting = ({ data, styles, onClick }: MainPostingProps) => {
 
         <p>{data?.country}</p>
       </div>
-      <div className='absolute text-white right-4 bottom-4 text-3xl max-md:text-2xl'>
+      <div className='absolute text-white right-4 bottom-4 text-3xl max-md:text-2xl '>
         {/* 좋아요 버튼*/}
         <LikeButton post={data} />
 

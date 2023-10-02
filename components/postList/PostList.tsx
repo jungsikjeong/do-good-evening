@@ -18,11 +18,11 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { toast } from 'react-toastify';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { user } from '@/recoil/userAtoms';
 import ShareButton from '../ShareButton';
 import LikeButton from '../LikeButton';
 import { isPostInfoModal, postInfo } from '@/recoil/postInfoModalAtoms';
 import PostInfoModal from '../PostInfoModal';
+import { observerState } from '@/recoil/postObserverAtoms';
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([
@@ -55,10 +55,14 @@ const PostList = ({ moveSectionDown }: any) => {
     },
   ]);
   const [posts, setPosts] = useState<PostProps[]>([]);
+  // const [observer, setObserver] = useState<boolean>(false); // Post가 바뀌는지 감시
 
-  const userInfo = useRecoilValue(user);
+  const observer = useRecoilValue(observerState);
+  const setObserver = useSetRecoilState(observerState);
+
   const postModalState = useRecoilValue(isPostInfoModal);
   const setPostModalState = useSetRecoilState(isPostInfoModal);
+
   const setPostInfo = useSetRecoilState(postInfo);
 
   const getPosts = () => {
@@ -82,8 +86,12 @@ const PostList = ({ moveSectionDown }: any) => {
   };
 
   useEffect(() => {
+    if (observer) {
+      getPosts();
+      setObserver(false);
+    }
     getPosts();
-  }, []);
+  }, [observer]);
 
   return (
     <div
@@ -147,17 +155,22 @@ const PostList = ({ moveSectionDown }: any) => {
                     {/* 포스팅 내용 */}
                     <div
                       className='absolute bottom-10 left-10 flex flex-col justify-between  h-44
-                text-white text-left max-md:h-32 max-md:left-0 max-md:bottom-0 max-md:w-full max-md:pl-4 max-md:py-3 max-md:bg-rgba-opacity'
+                text-white text-left max-md:h-32 max-md:left-0 max-md:bottom-0 max-md:w-full max-md:pl-4 max-md:py-3 max-md:bg-rgba-opacity
+                max-md:text-sm'
                     >
                       <p className=''>{data.nickname}님의 저녁</p>
 
-                      <hr className='w-20 h-1 bg-white' />
+                      <hr className='w-20 h-0 bg-white' />
 
                       <p>{data.createdAt.slice(12)} EST</p>
 
                       <p>{data.country}</p>
 
-                      <p>{data.content}</p>
+                      <p>
+                        {data.content.length > 26
+                          ? data.content.slice(0, 26) + '...'
+                          : data.content}
+                      </p>
                     </div>
                   </div>
 
@@ -255,8 +268,9 @@ const PostList = ({ moveSectionDown }: any) => {
 
                     {/* 포스팅 내용 */}
                     <div
-                      className='absolute bottom-10 left-10 flex flex-col justify-between  h-44
-        text-white text-left max-md:h-32 max-md:left-0 max-md:bottom-0 max-md:w-full max-md:pl-4 max-md:py-3 max-md:bg-rgba-opacity'
+                      className='absolute bottom-10 left-10 flex flex-col justify-between h-44
+        text-white text-left max-md:h-32 max-md:left-0 max-md:bottom-0 max-md:w-full max-md:pl-4 max-md:py-3 max-md:bg-rgba-opacity
+        '
                     >
                       <p className=''>{dummy.nickname}님의 저녁</p>
 
