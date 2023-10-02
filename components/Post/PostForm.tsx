@@ -3,7 +3,7 @@
 import { PostModalProps } from '.';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import Image from 'next/image';
 import { COUNTRIES } from '@/utils/countryNames';
@@ -14,13 +14,21 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  increment,
+  updateDoc,
+} from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { app, db } from '@/firebaseApp';
 import { PostProps } from '@/app/mypage/page';
 
 import Loading from '../Loading';
+import { observerState } from '@/recoil/postObserverAtoms';
 
 const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
   // 한글 나라이름 순서대로 정렬
@@ -38,6 +46,7 @@ const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
   const [post, setPost] = useState<PostProps>();
 
   const userInfo = useRecoilValue(user);
+  const setObserver = useSetRecoilState(observerState);
 
   const onChange = (
     e: React.ChangeEvent<
@@ -88,7 +97,15 @@ const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
 
     let imgAddress;
     let imgName;
+
     try {
+      if (!userInfo) {
+        toast?.error('로그인이 필요한 서비스입니다. 로그인해주세요!', {
+          position: 'top-center',
+        });
+        return; // 로그인되지 않았을 경우 함수 종료
+      }
+
       // 만약 post 데이터가 있다면,  데이터 수정
       if (postId) {
         // 이미지를 업로드 및 수정했을 때
@@ -123,7 +140,6 @@ const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
           });
           toast.success('게시물을 수정했습니다');
           setIsPostEdit && setIsPostEdit(true);
-          setPostModal(false);
         } else {
           // 이미지 없이 내용만 수정했을 경우
           const postRef = doc(db, 'posts', postId);
@@ -140,7 +156,6 @@ const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
           });
           toast.success('게시물을 수정했습니다');
           setIsPostEdit && setIsPostEdit(true);
-          setPostModal(false);
         }
       } else {
         // 처음 게시글 업로드할 때
@@ -169,9 +184,17 @@ const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
           like: [],
           uid: userInfo?.uid,
         });
+
+        // 유저 도큐먼트에서 postCount 1증가
+        const userRef = doc(db, 'users', userInfo?.uid);
+        await updateDoc(userRef, {
+          postCount: increment(1),
+        });
+
         toast?.success('게시글을 생성했습니다.', { position: 'top-center' });
-        setPostModal(false);
       }
+      setObserver(true);
+      setPostModal(false);
     } catch (error: any) {
       console.log(error);
       toast?.error(error?.code, { position: 'top-center' });

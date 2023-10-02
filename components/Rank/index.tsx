@@ -5,7 +5,7 @@ import { BiLike } from 'react-icons/bi';
 import { ImPencil2 } from 'react-icons/im';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { app, db } from '@/firebaseApp';
+import { db } from '@/firebaseApp';
 
 interface manyPostsProps {
   country: string;
@@ -13,10 +13,16 @@ interface manyPostsProps {
   post?: number;
 }
 
+interface topUsersProps {
+  id: string;
+  combinedCount: number;
+  nickname: string;
+}
+
 const Rank = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [topUsers, setTopUsers] = useState<string[]>([]);
+  const [topUsers, setTopUsers] = useState<topUsersProps[]>([]);
   const [manyPosts, setManyPosts] = useState<manyPostsProps[]>([]);
   const [manyLikedPosts, setManyLikedPosts] = useState<manyPostsProps[]>([]);
   const ranking = Array.from(Array(7), (_, index) => index + 1);
@@ -26,30 +32,28 @@ const Rank = () => {
     setTopUsers([]);
 
     let userRef = collection(db, 'users');
-    let userQuery = query(userRef);
 
-    const userSnapshot = await getDocs(userQuery);
+    // const userSnapshot = await getDocs(userQuery);
 
-    const usersData: any = [];
+    const userSnapshot = await getDocs(userRef);
+    let sortedUsers: topUsersProps[] = [];
 
     userSnapshot.forEach((doc) => {
-      const userData = doc.data();
-      const userId = doc.id;
-      const postCount = userData.posts.length;
-      const likeCount = userData.likes.length;
-
-      usersData.push({ userId, postCount, likeCount });
+      let userData = doc.data();
+      let combinedCount = userData.likeCount + userData.postCount;
+      sortedUsers.push({
+        id: doc.id,
+        combinedCount: combinedCount,
+        nickname: userData.nickname,
+      });
     });
 
-    // 좋아요 수로 정렬
-    usersData.sort((a: any, b: any) => b.likeCount - a.likeCount);
+    sortedUsers.sort((a: any, b: any) => b.combinedCount - a.combinedCount);
 
-    // 게시글 수로 정렬
-    usersData.sort((a: any, b: any) => b.postCount - a.postCount);
+    // 상위 10개만 가져오기
+    let top10Users = sortedUsers.slice(0, 10);
 
-    console.log(usersData);
-
-    setTopUsers(usersData);
+    setTopUsers(top10Users);
   };
 
   const getManyPosts = async () => {
@@ -129,7 +133,6 @@ const Rank = () => {
     setManyLikedPosts(sortData);
     setLoading(false);
   };
-  console.log(manyLikedPosts);
 
   useEffect(() => {
     getTopUsers();
@@ -148,51 +151,44 @@ const Rank = () => {
 
           {/* 가장 베스트 유저 1~3위*/}
           <div className='flex justify-around py-4 border-b-2 border-gray-400'>
-            <div className='flex gap-1 flex-col items-center '>
-              <img className='w-6 h-6' src='/images/gold.png' alt='' />
-              <p>리신</p>
-              <div className='flex justify-center items-center gap-1 text-sm px-2'>
-                <ImPencil2 />
-                <BiLike />
-                <p className='pl-3'>2121</p>
-              </div>
-            </div>
+            {topUsers.slice(0, 3).map((data, index) => (
+              <>
+                <div className='flex gap-1 flex-col items-center '>
+                  {index === 0 ? (
+                    <img className='w-6 h-6' src='/images/gold.png' alt='' />
+                  ) : null}
+                  {index === 1 ? (
+                    <img className='w-6 h-6' src='/images/silver.png' alt='' />
+                  ) : null}
+                  {index === 2 ? (
+                    <img className='w-6 h-6' src='/images/bronze.png' alt='' />
+                  ) : null}
 
-            <div className='flex gap-1 flex-col items-center'>
-              <img className='w-6 h-6' src='/images/silver.png' alt='' />
-              <p>리산드라</p>
-              <div className='flex justify-center items-center gap-1 text-sm px-2'>
-                <ImPencil2 />
-                <BiLike />
-                <p className='pl-3'>2121</p>
-              </div>
-            </div>
-
-            <div className='flex gap-1 flex-col items-center'>
-              <img className='w-6 h-6' src='/images/bronze.png' alt='' />
-              <p>미스포춘</p>
-              <div className='flex justify-center items-center gap-1 text-sm px-2'>
-                <ImPencil2 />
-                <BiLike />
-                <p className='pl-3'>2121</p>
-              </div>
-            </div>
+                  <p> {data.nickname} </p>
+                  <div className='flex justify-center items-center gap-1 text-sm px-2'>
+                    <ImPencil2 />
+                    <BiLike />
+                    <p className='pl-3'>{data.combinedCount}</p>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
 
           {/* 가장 많이 주목을 받은 유저 4~10위 */}
-          {ranking.map((data, index) => (
+          {topUsers?.slice(3)?.map((data, index) => (
             <div
               className='flex item-center p-2 border-b-[1px] border-gray-400 last:border-0'
-              key={data}
+              key={index}
             >
               <p className='mr-auto'>
                 <span className='pr-2'>{index + 4}</span>
-                풀생강차
+                {data?.nickname}
               </p>
               <div className='flex items-center gap-1'>
                 <ImPencil2 />
                 <BiLike />
-                <p className='pl-2'>593</p>
+                <p className='pl-2'>{data?.combinedCount}</p>
               </div>
             </div>
           ))}

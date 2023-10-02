@@ -11,9 +11,10 @@ import {
   getAuth,
   updateProfile,
 } from 'firebase/auth';
-import { app } from '@/firebaseApp';
+import { app, db } from '@/firebaseApp';
 import { useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 interface SignUpFormProps {
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
@@ -51,6 +52,13 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
           nickname: user.displayName,
           uid: user.uid,
         };
+
+        await setDoc(doc(db, 'users', user.uid), {
+          nickname: user.displayName,
+          likeCount: 0,
+          postCount: 0,
+          uid: user.uid,
+        });
 
         toast.success('회원가입에 성공했습니다.', {
           position: toast.POSITION.TOP_CENTER,
