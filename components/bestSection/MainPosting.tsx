@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { PostProps } from '@/app/mypage/page';
 import ShareButton from '../ShareButton';
 import LikeButton from '../LikeButton';
 
@@ -8,6 +7,21 @@ interface MainPostingProps {
   styles: boolean;
   onClick: (data: PostProps) => void;
 }
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const MainPosting = ({ data, styles, onClick }: MainPostingProps) => {
   return (
