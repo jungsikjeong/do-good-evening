@@ -48,7 +48,7 @@ const MyPage = () => {
   const [postId, setPostId] = useState<string>('');
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPostEdit, setIsPostEdit] = useState<boolean>(false); // 포스트가 변경되었는지 확인
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>();
 
   const postModalState = useRecoilValue(isPostDetailModal);
   const setPostModalState = useSetRecoilState(isPostDetailModal);
