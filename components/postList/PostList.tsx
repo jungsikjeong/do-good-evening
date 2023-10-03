@@ -182,22 +182,21 @@ const PostList = ({ moveSectionDown }: any) => {
                       <p>{data.country}</p>
 
                       <p>
-                        {data.content.length > 26
-                          ? data.content.slice(0, 26) + '...'
+                        {data.content.length > 15
+                          ? data.content.slice(0, 15) + '...'
                           : data.content}
                       </p>
                     </div>
                   </div>
 
                   {/* 스크롤 버튼 */}
-                  <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all z-20 max-md:hidden'>
-                    <button onClick={() => moveSectionDown()}>
-                      <img
-                        src='/images/scroll_icon.png'
-                        alt='Scroll'
-                        width={50}
-                        height={50}
-                      />
+                  <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all z-20 '>
+                    {/* <div className='absolute bottom-0 m-auto w-full hover:scale-110 transition-all z-20 max-md:hidden'> */}
+                    <button
+                      onClick={() => moveSectionDown()}
+                      className='max-md:w-11 max-md:mb-6'
+                    >
+                      <img src='/images/scroll_icon.png' alt='Scroll' />
                     </button>
                   </div>
                 </SwiperSlide>

@@ -24,13 +24,13 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='w-full h-scree'>
-        <header className='fixed p-10 pb-0 z-10 max-md:p-2'>
+        <header className='fixed p-10 pb-0 z-10  max-md:p-2'>
           <Link href='/'>
             <Image
               src='/images/deg_logo.png'
               alt='로고'
-              width={100}
-              height={150}
+              width={60}
+              height={100}
             />
           </Link>
         </header>
