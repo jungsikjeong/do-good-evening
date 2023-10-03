@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -10,7 +10,9 @@ import {
 } from 'react-simple-maps';
 
 const geoUrl =
-  'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
+  'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/v2/topojson-maps/world-110m.json';
+// const geoUrl =
+//   'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
 
 var timestamp = Date.now();
 var date = new Date(timestamp);
