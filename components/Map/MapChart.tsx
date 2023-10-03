@@ -104,13 +104,22 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
       ></div>
 
       <ComposableMap
-        className='w-full h-full absolute top-0 bottom-0 left-0 z-20'
+        className='w-full h-full absolute top-0 bottom-0 left-0 z-20 '
         projection='geoEquirectangular'
         projectionConfig={{ scale: 210 }}
       >
         {isMobile ? (
           <>
-            <ZoomableGroup center={[0, 0]} zoom={2.5} minZoom={2} maxZoom={5}>
+            <ZoomableGroup
+              center={[0, 0]}
+              zoom={2.5}
+              minZoom={2}
+              maxZoom={5}
+              translateExtent={[
+                [-600, -300],
+                [1000, 500],
+              ]}
+            >
               <Geographies geography={geoUrl}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
