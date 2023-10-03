@@ -24,8 +24,8 @@ type likeType = {
 
 const ShareButton = ({ post }: ShareButtonProps) => {
   const onPostingShareClick = (data: any) => {
-    const image = data?.imageUrl
-      ? data?.imageUrl
+    const image = data?.imgUrl
+      ? data?.imgUrl
       : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbnK2OT%2Fbtsv8UuRUdf%2F2GMlvba3o7hnuSfjIOyZKk%2Fimg.jpg';
 
     const clipData = {

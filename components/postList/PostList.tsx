@@ -70,8 +70,6 @@ const PostList = ({ moveSectionDown }: any) => {
     },
   ]);
   const [posts, setPosts] = useState<PostProps[]>([]);
-  // const [observer, setObserver] = useState<boolean>(false); // Post가 바뀌는지 감시
-
   const observer = useRecoilValue(observerState);
   const setObserver = useSetRecoilState(observerState);
 
