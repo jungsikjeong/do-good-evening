@@ -110,7 +110,7 @@ const MapChart = ({ moveSectionDown, isMobile }: any) => {
       >
         {isMobile ? (
           <>
-            <ZoomableGroup center={[0, 0]} zoom={2.5}>
+            <ZoomableGroup center={[0, 0]} zoom={2.5} minZoom={2} maxZoom={5}>
               <Geographies geography={geoUrl}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
