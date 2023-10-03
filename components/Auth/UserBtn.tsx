@@ -18,12 +18,9 @@ import { useRouter } from 'next/navigation';
 import {
   collection,
   deleteDoc,
-  doc,
   getDocs,
-  orderBy,
   query,
   where,
-  writeBatch,
 } from 'firebase/firestore';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
 

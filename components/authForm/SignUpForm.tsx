@@ -1,8 +1,7 @@
 'use client';
 
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { GrFormNextLink } from 'react-icons/gr';
 import { GrFormClose } from 'react-icons/gr';
 import { Inputs } from './SignInForm';
 import { toast } from 'react-toastify';
@@ -14,7 +13,7 @@ import {
 import { app, db } from '@/firebaseApp';
 import { useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 interface SignUpFormProps {
   setAuthModal: React.Dispatch<SetStateAction<boolean>>;
@@ -193,7 +192,7 @@ const SignUpForm = ({ setAuthModal }: SignUpFormProps) => {
                 message: '6글자까지 입력해주세요.',
               },
               validate: {
-                check: (val) => {
+                check: (val: any) => {
                   if (getValues('password') !== val) {
                     return '비밀번호가 일치하지 않습니다.';
                   }

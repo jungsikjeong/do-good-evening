@@ -2,7 +2,7 @@
 
 import { AiOutlineLogin } from 'react-icons/ai';
 import { motion } from 'framer-motion';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction } from 'react';
 import { useRecoilValue } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import UserBtn from './UserBtn';

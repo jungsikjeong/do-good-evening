@@ -48,6 +48,7 @@ const MyPage = () => {
   const [postId, setPostId] = useState<string>('');
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPostEdit, setIsPostEdit] = useState<boolean>(false); // 포스트가 변경되었는지 확인
+  const [user, setUser] = useState();
 
   const postModalState = useRecoilValue(isPostDetailModal);
   const setPostModalState = useSetRecoilState(isPostDetailModal);
@@ -56,8 +57,9 @@ const MyPage = () => {
   // Text content does not match server-rendered HTML
   // 위의 에러때문에  recoil user state 사용을 못함
   // useEffect에서 useState에 저장하는식으로 하려고했는데 새로고침하면 처음 언디파인이 떠서 이렇게해줬음
-  const user = JSON.parse(localStorage.getItem('user') as string);
-
+  // if (typeof window !== 'undefined') {
+  //   const user = JSON.parse(localStorage.getItem('user') as string);
+  // }
   const getPosts = async () => {
     // posts 초기화
     setPosts([]);
@@ -120,6 +122,10 @@ const MyPage = () => {
 
   useEffect(() => {
     const localState = JSON.parse(localStorage.getItem('user') as string);
+    if (localState) {
+      setUser(localState);
+    }
+
     if (!localState || localState.userState === null) {
       toast.warn('로그인을 해주세요', { position: 'top-center' });
       redirect('/');
