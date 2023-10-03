@@ -12,7 +12,6 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { PostProps } from '@/app/mypage/page';
 import { db } from '@/firebaseApp';
 import Image from 'next/image';
 import {
@@ -20,6 +19,22 @@ import {
   postDetailInfo,
 } from '@/recoil/postDetailModalAtoms';
 import PostDetailModal from '../PostDetailModal';
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const BestSection = ({ moveSectionDown }: any) => {
   const [posts, setPosts] = useState<PostProps[]>([]);

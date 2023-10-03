@@ -13,7 +13,6 @@ import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { PostProps } from '@/app/mypage/page';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { toast } from 'react-toastify';
@@ -23,6 +22,22 @@ import LikeButton from '../LikeButton';
 import { isPostInfoModal, postInfo } from '@/recoil/postInfoModalAtoms';
 import PostInfoModal from '../PostInfoModal';
 import { observerState } from '@/recoil/postObserverAtoms';
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const PostList = ({ moveSectionDown }: any) => {
   const [dummyData, setDummyData] = useState([

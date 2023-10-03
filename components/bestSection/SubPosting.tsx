@@ -1,12 +1,26 @@
-import { PostProps } from '@/app/mypage/page';
 import Image from 'next/image';
-import Link from 'next/link';
 import LikeButton from '../LikeButton';
 
 interface SubPostingProps {
   data: PostProps;
   onClick: (data: PostProps) => void;
 }
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const SubPosting = ({ data, onClick }: SubPostingProps) => {
   return (
