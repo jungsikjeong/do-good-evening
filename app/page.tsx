@@ -22,19 +22,11 @@ export default function Home() {
 
   const [authModal, setAuthModal] = useState<boolean>(false);
   const [postModal, setPostModal] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+
   const [init, setInit] = useState<boolean>(true);
 
   const userInfo = useRecoilValue(user);
   const setUser = useSetRecoilState(user);
-
-  const handleResize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user: any) => {
@@ -52,15 +44,6 @@ export default function Home() {
       setInit(false);
     });
   }, [auth]);
-
-  // 모바일 화면인지 체크
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   if (init) {
     return <Loading />;
@@ -82,9 +65,7 @@ export default function Home() {
       <FullPages />
 
       {/* 글쓰기 버튼 */}
-      {userInfo && (
-        <PostingButton isMobile={isMobile} setPostModal={setPostModal} />
-      )}
+      {userInfo && <PostingButton setPostModal={setPostModal} />}
     </>
   );
 }

@@ -22,6 +22,7 @@ import LikeButton from '../LikeButton';
 import { isPostInfoModal, postInfo } from '@/recoil/postInfoModalAtoms';
 import PostInfoModal from '../PostInfoModal';
 import { observerState } from '@/recoil/postObserverAtoms';
+import Loading from '../Loading';
 
 interface PostProps {
   content: string;
@@ -70,6 +71,7 @@ const PostList = ({ moveSectionDown }: any) => {
     },
   ]);
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const observer = useRecoilValue(observerState);
   const setObserver = useSetRecoilState(observerState);
 
@@ -90,6 +92,7 @@ const PostList = ({ moveSectionDown }: any) => {
         dataArr.push(dataObj);
       });
       setPosts(dataArr);
+      setLoading(false);
     });
   };
 
@@ -111,6 +114,7 @@ const PostList = ({ moveSectionDown }: any) => {
       className='relative w-screen h-screen bg-black z-50'
       onClick={() => postModalState && setPostModalState(false)}
     >
+      {loading && <Loading />}
       {postModalState && <PostInfoModal />}
       <Swiper
         slidesPerView={1}
