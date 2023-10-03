@@ -1,6 +1,5 @@
 'use client';
 
-import { PostProps, likeType } from '@/app/mypage/page';
 import { db } from '@/firebaseApp';
 import { user } from '@/recoil/userAtoms';
 import {
@@ -18,12 +17,8 @@ import { FcLikePlaceholder } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-interface LikeButtonProps {
-  post: PostProps;
-}
-
-const LikeButton = ({ post }: LikeButtonProps) => {
-  const [posts, setPosts] = useState<PostProps[]>([]);
+const LikeButton = ({ post }: any) => {
+  const [posts, setPosts] = useState<any[]>([]);
 
   const userInfo = useRecoilValue(user);
 
@@ -60,7 +55,7 @@ const LikeButton = ({ post }: LikeButtonProps) => {
 
     // 기존 좋아요 목록을 가져옴
     const post = postSnapshot.data();
-    const likes = (post?.like as likeType[]) || [];
+    const likes = (post?.like as any[]) || [];
 
     // 좋아요를 이미 누른 경우 중복으로 추가하지 않도록 체크
     const userLikeIndex = likes.findIndex(
@@ -105,7 +100,7 @@ const LikeButton = ({ post }: LikeButtonProps) => {
           <FcLike className='svg_color' />
         ) : (
           <>
-            {post?.like?.map((like) =>
+            {post?.like?.map((like: any) =>
               like.likeUser === userInfo?.uid ? (
                 <FcLikePlaceholder
                   className='svg_color-red'
