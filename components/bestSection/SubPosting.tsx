@@ -26,7 +26,7 @@ const SubPosting = ({ data, onClick }: SubPostingProps) => {
   return (
     <li className='relative max-md:col-span-2 overflow-hidden cursor-pointer'>
       <Image
-        src='/images/example0.jpg'
+        src={data.imgUrl ? data.imgUrl : '/images/example1.jpg'}
         alt=''
         className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
         width={306}

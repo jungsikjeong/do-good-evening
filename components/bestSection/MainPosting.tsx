@@ -33,7 +33,7 @@ const MainPosting = ({ data, styles, onClick }: MainPostingProps) => {
       }
     >
       <Image
-        src='/images/example0.jpg'
+        src={data.imgUrl ? data.imgUrl : '/images/example1.jpg'}
         alt=''
         className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
         fill
