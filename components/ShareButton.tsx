@@ -1,11 +1,26 @@
 import { kakaoClipboard } from 'react-kakao-share';
 import { motion } from 'framer-motion';
 import { BiShareAlt } from 'react-icons/bi';
-import { PostProps } from '@/app/mypage/page';
 
 interface ShareButtonProps {
   post: PostProps;
 }
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const ShareButton = ({ post }: ShareButtonProps) => {
   const onPostingShareClick = (data: any) => {
