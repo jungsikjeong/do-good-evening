@@ -25,10 +25,25 @@ import {
 import { toast } from 'react-toastify';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { app, db } from '@/firebaseApp';
-import { PostProps } from '@/app/mypage/page';
 
 import Loading from '../Loading';
 import { observerState } from '@/recoil/postObserverAtoms';
+
+interface PostProps {
+  content: string;
+  country: string;
+  createdAt: string;
+  email: string;
+  imgUrl: string;
+  id?: string;
+  uid: string;
+  nickname: string;
+  like: likeType[];
+}
+
+type likeType = {
+  likeUser: string;
+};
 
 const PostForm = ({ setPostModal, postId, setIsPostEdit }: PostModalProps) => {
   // 한글 나라이름 순서대로 정렬
