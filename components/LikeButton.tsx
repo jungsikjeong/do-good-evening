@@ -10,8 +10,6 @@ import { FcLikePlaceholder } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-// ... (이전 코드)
-
 const LikeButton = ({ post }: any) => {
   const userInfo = useRecoilValue(user);
 

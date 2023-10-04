@@ -24,13 +24,14 @@ type likeType = {
 
 const SubPosting = ({ data, onClick }: SubPostingProps) => {
   return (
-    <li className='relative max-md:col-span-2 overflow-hidden cursor-pointer'>
+    <li className='relative max-md:col-span-2 overflow-hidden cursor-pointer w-[306px] h-[172px] max-sm:w-40'>
       <Image
         src={data.imgUrl ? data.imgUrl : '/images/example1.jpg'}
         alt=''
         className='hover:scale-125 transition-all ease-linear duration-[0.3s]'
-        width={306}
-        height={172}
+        // width={306}
+        fill
+        // height={172}
         onClick={() => onClick(data)}
       />
 

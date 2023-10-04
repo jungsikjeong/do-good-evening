@@ -98,7 +98,7 @@ const BestSection = ({ moveSectionDown }: any) => {
         <div className='max-w-7xl  m-auto'>
           {postModalState && <PostDetailModal />}
 
-          <ul className='grid grid-cols-4 gap-1 '>
+          <ul className='grid grid-cols-4 gap-1 max-sm:p-4 '>
             <MainPosting
               data={posts[0]}
               styles={posts.length === 1 ? true : false}
