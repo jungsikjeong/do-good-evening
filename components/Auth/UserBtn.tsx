@@ -165,7 +165,7 @@ const UserBtn = ({ hasNavigation = false }) => {
               </li>
             ) : (
               <li className='p-4'>
-                <Link href='/mypage'>마이페이지</Link>
+                <Link href='/myPage'>마이페이지</Link>
               </li>
             )}
           </ul>
