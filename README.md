@@ -107,6 +107,18 @@ FireBase
 
 ## 👪 개발 팀 소개
 
+<table>
+  <tr>
+    <!-- <td align="center">
+      <a href="https://github.com/jungsikjeong">
+        <img src="https://avatars.githubusercontent.com/u/57592095?v=4" alt="이주현 프로필" />
+      </a>
+    </td> -->
+   
+  </tr>
+  
+</table>
+
 [**🔗 팀 개발 규칙 바로가기 Click !**](https://github.com/do-good-morning/do-good-morning/tree/master/team-rules) 👈
 
 <br />

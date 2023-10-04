@@ -12,7 +12,7 @@ import { useKakaoScript } from 'react-kakao-share';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '@/firebaseApp';
 import Loading from '@/components/Loading';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { user } from '@/recoil/userAtoms';
 import PostingButton from '@/components/PostingButton';
 
@@ -25,7 +25,6 @@ export default function Home() {
 
   const [init, setInit] = useState<boolean>(true);
 
-  const userInfo = useRecoilValue(user);
   const setUser = useSetRecoilState(user);
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function Home() {
       <FullPages />
 
       {/* 글쓰기 버튼 */}
-      {userInfo && <PostingButton setPostModal={setPostModal} />}
+      <PostingButton setPostModal={setPostModal} />
     </>
   );
 }
