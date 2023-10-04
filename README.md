@@ -99,8 +99,6 @@ FireBase
 
 ## 🎥 데모 영상
 
-추후 업데이트 예정..
-
 <br />
 
 <div id="6"></div>
@@ -109,11 +107,12 @@ FireBase
 
 <table>
   <tr>
-    <!-- <td align="center">
+    <td align="center">
       <a href="https://github.com/jungsikjeong">
-        <img src="https://avatars.githubusercontent.com/u/57592095?v=4" alt="이주현 프로필" />
+        <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fba5dae79-0999-4170-9050-1c2c98adbd78%2Fprofile.jpg?table=block&id=93fa9759-0805-49e9-9392-5fd4f55d61b7&spaceId=f58dd584-7b46-47a4-a941-868db894802c&width=250&userId=145179e5-743e-4d24-b6d8-3d2f3bd93dc7&cache=v2" alt="정중식 프로필" /><br/>
+      정중식<br />(Front-end),(Back-end)
       </a>
-    </td> -->
+    </td>
    
   </tr>
   
